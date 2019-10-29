@@ -1,7 +1,14 @@
-# rails new groundzero --skip-yarn --skip-git --skip-action-cable --skip-coffee --skip-turbolinks --skip-test --skip-system-test --api
+# rails new groundzero -d=postgresql --skip-bundle --skip-git --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-action-cable --skip-sprockets --skip-turbolinks --skip-test --skip-system-test --api
 
-FROM ruby:2.5.0
-RUN apt-get update -qq && apt-get install -y build-essential nodejs vim sudo
+FROM ruby:2.6.5
+RUN apt-get update -qq && apt-get install -y build-essential vim sudo
+
+# Nodejs
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y nodejs
+
+# Yarn
+RUN npm install -g yarn
 
 # required to be passed in
 ARG APP_PATH
