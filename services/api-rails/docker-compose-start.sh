@@ -2,4 +2,4 @@
 
 bundle check || bundle install --without production
 
-rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0
+bundle exec rake db:setup && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0
