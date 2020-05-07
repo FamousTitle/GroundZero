@@ -1,24 +1,42 @@
-# README
+# API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## JWT
 
-Things you may want to cover:
+Revocation Strategy: JTI Matcher
 
-* Ruby version
+### Signup
 
-* System dependencies
+```
+POST http://localhost:3001/users
 
-* Configuration
+{
+	"user": {
+		"email": "asdf@asdf.com",
+		"password": "hogehoge1!",
+		"password_confirmation": "hogehoge1!"
+	}
+}
 
-* Database creation
+```
 
-* Database initialization
+### Login
 
-* How to run the test suite
+```
+POST http://localhost:3001/users/sign_in
 
-* Services (job queues, cache servers, search engines, etc.)
+{
+	"user": {
+		"email": "asdf@asdf.com",
+		"password": "hogehoge1!"
+	}
+}
+```
 
-* Deployment instructions
+### Logout
 
-* ...
+```
+DELETE http://localhost:3001/users/sign_out
+
+Headers:
+    Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1Iiwic2NwIjoidXNlciIsImF1ZCI6ImlwaG9uZSIsImlhdCI6MTU4ODgzNDAwMiwiZXhwIjoxNTg4ODQ4NDAyLCJqdGkiOiJiYmJiMGZiMC00OWM2LTRkMzYtYjE1YS01NzY0ZDVmNDJjMzAifQ.eJ1BK1O-zspwKo5TtpiC3riskyOhPpkgvJSf7yzyALE
+```
