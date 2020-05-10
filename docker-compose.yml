@@ -13,6 +13,7 @@ services:
       - ./services/web-react:/app
     command:
       - ./docker-compose-start.sh
+    stdin_open: true
     depends_on:
       - api-rails
   api-rails:
