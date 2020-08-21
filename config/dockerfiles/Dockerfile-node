@@ -1,4 +1,4 @@
-FROM node:12.6
+FROM node:12.18.3
 
 # required to be passed in
 ARG APP_PATH

@@ -1,15 +1,18 @@
 # rails 6.0.0 full rails app
 # rails new groundzero -d=postgresql --skip-bundle --skip-git --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-action-cable --skip-turbolinks --skip-test --skip-system-test --skip-javascript
 
-FROM ruby:2.6.5
+FROM ruby:2.7.1
 RUN apt-get update -qq && apt-get install -y build-essential vim sudo
 
 # Nodejs
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     apt-get install -y nodejs
 
 # Yarn
 RUN npm install -g yarn
+
+# Rails
+RUN gem install rails --no-document
 
 # required to be passed in
 ARG APP_PATH
