@@ -1,4 +1,4 @@
-# FamousTitle
+# GroundZero
 
 ## Requirements
 
@@ -17,6 +17,44 @@ Launch the project
 
 ```
 docker-compose up
+```
+
+## Database Setups
+
+### mysql
+
+```
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password: rails
+  host: db-mysql
+```
+
+Sequel Ace / Pro:
+
+```
+Name: ground-zero
+host: 127.0.0.1
+Username: root
+Password: rails
+Port: 4500
+```
+
+### postgres
+
+```
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: db-postgres
+  username: rails
+  password: rails
 ```
 
 ## Need to access a container?
