@@ -42,6 +42,8 @@ services:
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
+    logging:
+      driver: "none"
     environment:
       - POSTGRES_USER=rails
       - POSTGRES_PASSWORD=rails
@@ -51,6 +53,8 @@ services:
     restart: always
     ports:
       - 4500:3306
+    logging:
+      driver: "none"
     environment:
       MYSQL_ROOT_PASSWORD: rails
       MYSQL_USERNAME: rails
@@ -62,6 +66,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "hogehoge"
     ports:
       - 4000:80
+    logging:
+      driver: "none"
     depends_on:
       - db-postgres
 volumes:
