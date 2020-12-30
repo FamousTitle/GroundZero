@@ -1,5 +1,6 @@
 # rails 6.0.0 full rails app
 # rails new groundzero -d=postgresql --skip-bundle --skip-git --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-action-cable --skip-turbolinks --skip-test --skip-system-test --skip-javascript
+# rails new groundzero -d=mysql --skip-bundle --skip-git --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-action-cable --skip-turbolinks --skip-test --skip-system-test --skip-javascript
 
 FROM ruby:3.0.0
 RUN apt-get update -qq && apt-get install -y build-essential vim sudo
