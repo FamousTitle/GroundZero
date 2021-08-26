@@ -5,10 +5,10 @@ services:
     build:
       context: .
       dockerfile: ./config/dockerfiles/Dockerfile-node
-      args:
-        APP_PATH: ./services/web-react
     ports:
-      - '3000:3000'
+      - "3000:3000"
+    env_file:
+      - ./config/environments/.web.development.env
     volumes:
       - ./services/web-react:/app
     command:
@@ -17,18 +17,24 @@ services:
       - api-rails
     stdin_open: true
     tty: true
+    logging:
+      driver: "json-file"
   api-rails:
     build:
       context: .
       dockerfile: ./config/dockerfiles/Dockerfile-ruby
-      args:
-        APP_PATH: ./services/api-rails
     ports:
-      - '3001:3000'
+      - "3001:3001"
     env_file:
-      - ./config/environments/.development.env
+      - ./config/environments/.backend.development.env
     volumes:
       - ./services/api-rails:/app
+    logging:
+      driver: "json-file"
+    volumes:
+      - ./services/api-rails:/app
+      - ../fameauth:/app/vendor/fameauth
+      - bundler_gems:/usr/local/bundle/
     depends_on:
       - db-mysql
     command:
@@ -37,38 +43,70 @@ services:
     tty: true
   #   to run with byebug:
   #   docker-compose up -d && docker attach groundzero_api-rails_1
-  db-postgres:
-    image: postgres:12
-    restart: always
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    logging:
-      driver: "none"
-    environment:
-      - POSTGRES_USER=rails
-      - POSTGRES_PASSWORD=rails
+  # db-postgres:
+  #   image: postgres:12
+  #   restart: always
+  #   volumes:
+  #     - db_data:/var/lib/postgresql/data
+  #   logging:
+  #     driver: "none"
+  #   environment:
+  #     - POSTGRES_USER=rails
+  #     - POSTGRES_PASSWORD=rails
   db-mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-      - 4500:3306
+      - 3002:3306
     logging:
       driver: "none"
+    volumes:
+      - db-mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: rails
       MYSQL_USERNAME: rails
       MYSQL_PASSWORD: rails
   db-admin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "user@email.com"
-      PGADMIN_DEFAULT_PASSWORD: "hogehoge"
+    image: adminer
+    restart: always
     ports:
-      - 4000:80
+      - 3003:8080
     logging:
       driver: "none"
-    depends_on:
-      - db-postgres
+  # db-admin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "user@email.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "hogehoge"
+  #   ports:
+  #     - 4000:80
+  #   logging:
+  #     driver: "none"
+  #   depends_on:
+  #     - db-postgres
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   ports:
+  #     - 27017:27017
+  #   logging:
+  #     driver: none
+  #   depends_on:
+  #     - mongo-express
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+  #   logging:
+  #     driver: none
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: example
 volumes:
-  db_data:
+  db-mysql: {}
+  bundler_gems: {}

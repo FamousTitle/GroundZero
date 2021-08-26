@@ -1,21 +1,20 @@
-FROM node:14.15.0
+FROM node:14.17.0
 
 # required to be passed in
-ARG APP_PATH
-
-ARG INSTALL_PATH=/app
-ARG LOCAL_USER=node
+ENV APP_PATH=./services/web-react
+ENV INSTALL_PATH=/app
+ENV LOCAL_USER=node
 
 # Create a directory where our app will be placed
-RUN mkdir -p $INSTALL_PATH
+RUN mkdir -p ${INSTALL_PATH}
 
 # Change directory so that our commands run inside this new directory
 WORKDIR $INSTALL_PATH
 
 # Install global packages with local user
-USER $LOCAL_USER
+#USER $LOCAL_USER
 
 # Get all the code needed to run the app
 COPY $APP_PATH/. $INSTALL_PATH/.
 
-CMD ["yarn", "run", "start"]
+CMD ["npm", "run", "start"]

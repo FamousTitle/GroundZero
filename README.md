@@ -7,12 +7,6 @@
 
 ## Getting Started
 
-If this is your first time launching, you will need to have a `.aws.env` file. You can use the sample `.aws.env.sample` file as a reference for the ENV keys required for the application
-
-```
-cp config/environments/.aws.env.sample config/environments/.aws.env
-```
-
 Launch the project
 
 ```
