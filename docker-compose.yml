@@ -33,7 +33,6 @@ services:
       driver: "json-file"
     volumes:
       - ./services/api-rails:/app
-      - ../fameauth:/app/vendor/fameauth
       - bundler_gems:/usr/local/bundle/
     depends_on:
       - db-mysql

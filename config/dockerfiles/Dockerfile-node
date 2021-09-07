@@ -12,7 +12,7 @@ RUN mkdir -p ${INSTALL_PATH}
 WORKDIR $INSTALL_PATH
 
 # Install global packages with local user
-#USER $LOCAL_USER
+USER $LOCAL_USER
 
 # Get all the code needed to run the app
 COPY $APP_PATH/. $INSTALL_PATH/.

@@ -10,7 +10,7 @@
 Clone this starter project
 
 ```
-git clone https://github.com/vleango/GroundZero.git
+git clone https://github.com/vleango/GroundZero.git [project_name]
 ```
 
 Create the api-rails service
@@ -18,15 +18,7 @@ Create the api-rails service
 ```
 docker-compose run --rm api-rails bash
 
-rails new [project_name] -d=mysql --skip-bundle --skip-git --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-action-cable --skip-turbolinks --skip-test --skip-system-test --skip-javascript
-```
-
-Run the api-rails starter script
-
-```
-gem 'famoustitle_rails', git: 'https://github.com/vleango/famoustitle-rails', ref: '83283ea'
-
-rails g famoustitle_rails:install
+./new_app.sh [project_name]
 ```
 
 Create web-react service
@@ -34,7 +26,7 @@ Create web-react service
 ```
 docker-compose run --rm web-react bash
 
-npx create-next-app [project-name] -e https://github.com/vleango/with-next-famoustitle
+./new_app.sh [project_name]
 ```
 
 Launch the project
