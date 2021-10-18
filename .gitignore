@@ -1,6 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 .idea/
+.next/
+
+**/*.local.env
+**/*.production.env
+
+services/db-mysql/*
+!services/db-mysql/.keep
+
+services/db/backups/*
+!services/db/backups/.keep
 
 # Lambda
 #############################
@@ -42,6 +52,7 @@ pickle-email-*.html
 **/vendor/bundle
 .byebug_history
 **/public/packs
+**/storage/
 
 **/config/initializers/secret_token.rb
 **/config/master.key
