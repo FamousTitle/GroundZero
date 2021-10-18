@@ -5,7 +5,7 @@ if [ -n "$1" ]; then
   mv -n $1/* .
   rm -rf $1
 
-  echo "gem 'famoustitle_rails', git: 'https://github.com/vleango/famoustitle-rails', ref: '082c080'" >> /app/Gemfile
+  echo "gem 'famoustitle_rails', git: 'https://github.com/vleango/famoustitle-rails', tag: '1.1.0'" >> /app/Gemfile
   bundle
 
   echo "hi"
