@@ -27,13 +27,12 @@ services:
       - "3001:3001"
     env_file:
       - ./config/environments/.backend.development.env
-    volumes:
-      - ./services/api-rails:/app
     logging:
       driver: "json-file"
     volumes:
       - ./services/api-rails:/app
       - bundler_gems:/usr/local/bundle/
+      - ../fameauth:/app/fameauth
     depends_on:
       - db-mysql
     command:
