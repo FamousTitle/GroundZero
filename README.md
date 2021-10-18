@@ -16,17 +16,13 @@ git clone https://github.com/vleango/GroundZero.git [project_name]
 Create the api-rails service
 
 ```
-docker-compose run --rm api-rails bash
-
-./new_app.sh [project_name]
+docker-compose run --rm api-rails ./new_app.sh [project_name]
 ```
 
 Create web-react service
 
 ```
-docker-compose run --rm web-react bash
-
-./new_app.sh [project_name]
+docker-compose run --rm web-react ./new_app.sh [project_name]
 ```
 
 Launch the project
