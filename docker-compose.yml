@@ -32,7 +32,7 @@ services:
     volumes:
       - ./services/api-rails:/app
       - bundler_gems:/usr/local/bundle/
-      - ../fameauth:/app/fameauth
+      # - ../fameauth:/app/fameauth
     depends_on:
       - db-mysql
     command:
