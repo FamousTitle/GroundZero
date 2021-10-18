@@ -8,11 +8,9 @@ if [ -n "$1" ]; then
   echo "gem 'famoustitle_rails', git: 'https://github.com/vleango/famoustitle-rails', tag: '1.1.0'" >> /app/Gemfile
   bundle
 
-  echo "hi"
   rails g famoustitle_rails:install
-  echo "bye"
 
-  echo "$1 created!"
+  echo "$1 api-rails created!"
 else
   echo "Need to set a project name!"
 fi
