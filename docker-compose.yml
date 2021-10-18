@@ -66,6 +66,21 @@ services:
       MYSQL_ROOT_PASSWORD: rails
       MYSQL_USERNAME: rails
       MYSQL_PASSWORD: rails
+  # db-mysql-backup:
+  #   image: databack/mysql-backup
+  #   restart: always
+  #   user: "0"
+  #   volumes:
+  #     - ./services/db-mysql/backups:/db
+  #   environment:
+  #     - DB_DUMP_TARGET=/db
+  #     - DB_USER=root
+  #     - DB_PASS=rails
+  #     - DB_DUMP_FREQ=60
+  #     - DB_NAMES=note_station_development
+  #     - DB_SERVER=db-mysql
+  #   depends_on:
+  #     - db-mysql
   db-admin:
     image: adminer
     restart: always

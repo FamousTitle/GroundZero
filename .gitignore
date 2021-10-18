@@ -9,9 +9,6 @@
 services/db-mysql/*
 !services/db-mysql/.keep
 
-services/db/backups/*
-!services/db/backups/.keep
-
 # Lambda
 #############################
 **/pkg/
