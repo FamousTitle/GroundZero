@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.8"
 
 services:
   web-react:
@@ -27,59 +27,31 @@ services:
       - "3001:3001"
     env_file:
       - ./config/environments/.backend.development.env
+      - ./config/environments/.db.development.env
     logging:
       driver: "json-file"
     volumes:
       - ./services/api-rails:/app
       - bundler_gems:/usr/local/bundle/
-      # - ../fameauth:/app/fameauth
     depends_on:
-      - db-mysql
+      - db-postgres
     command:
       - ./docker-compose-start.sh
     stdin_open: true
     tty: true
   #   to run with byebug:
   #   docker-compose up -d && docker attach groundzero_api-rails_1
-  # db-postgres:
-  #   image: postgres:12
-  #   restart: always
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
-  #   logging:
-  #     driver: "none"
-  #   environment:
-  #     - POSTGRES_USER=rails
-  #     - POSTGRES_PASSWORD=rails
-  db-mysql:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+  db-postgres:
+    image: postgres:13
     restart: always
     ports:
-      - 3002:3306
+      - 3002:5432
     logging:
       driver: "none"
     volumes:
-      - db-mysql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rails
-      MYSQL_USERNAME: rails
-      MYSQL_PASSWORD: rails
-  # db-mysql-backup:
-  #   image: databack/mysql-backup
-  #   restart: always
-  #   user: "0"
-  #   volumes:
-  #     - ./services/db-mysql/backups:/db
-  #   environment:
-  #     - DB_DUMP_TARGET=/db
-  #     - DB_USER=root
-  #     - DB_PASS=rails
-  #     - DB_DUMP_FREQ=60
-  #     - DB_NAMES=note_station_development
-  #     - DB_SERVER=db-mysql
-  #   depends_on:
-  #     - db-mysql
+      - db-postgres:/var/lib/postgresql/data
+    env_file:
+      - ./config/environments/.db.development.env
   db-admin:
     image: adminer
     restart: always
@@ -87,39 +59,8 @@ services:
       - 3003:8080
     logging:
       driver: "none"
-  # db-admin:
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: "user@email.com"
-  #     PGADMIN_DEFAULT_PASSWORD: "hogehoge"
-  #   ports:
-  #     - 4000:80
-  #   logging:
-  #     driver: "none"
-  #   depends_on:
-  #     - db-postgres
-  # mongo:
-  #   image: mongo
-  #   restart: always
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: example
-  #   ports:
-  #     - 27017:27017
-  #   logging:
-  #     driver: none
-  #   depends_on:
-  #     - mongo-express
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   ports:
-  #     - 8081:8081
-  #   logging:
-  #     driver: none
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    depends_on:
+      - db-postgres
 volumes:
-  db-mysql: {}
+  db-postgres: {}
   bundler_gems: {}
