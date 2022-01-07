@@ -1,5 +1,4 @@
-# TODO change to ruby 3.1.0 as soon as rails is 7.0.1
-FROM ruby:3.0.0
+FROM ruby:3.1.0
 RUN apt-get update -qq && apt-get install -y build-essential vim sudo
 
 # Nodejs
@@ -18,7 +17,7 @@ RUN useradd -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && a
 RUN usermod -a -G users $LOCAL_USER
 USER $LOCAL_USER
 
-RUN gem install rails -v=7.0.0 --no-document
+RUN gem install rails -v=7.0.1 --no-document
 
 # RUN bundle install
 

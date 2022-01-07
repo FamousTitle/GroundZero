@@ -25,6 +25,21 @@ Launch the project
 docker-compose up
 ```
 
+## Other setup
+
+### Rails Credentials
+
+```
+docker-compose run --rm api-rails bash
+
+rails db:encryption:init
+```
+- copy the contents to `credentials:edit`
+
+```
+EDITOR=vi rails credentials:edit
+```
+
 ## Database Setups
 
 ### mysql
