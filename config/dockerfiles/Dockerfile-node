@@ -1,9 +1,23 @@
-FROM node:16.13.1
+ARG IMG_VERSION
+FROM node:$IMG_VERSION
 
-# required to be passed in
-ENV APP_PATH=./services/web-react
-ENV INSTALL_PATH=/app
-ENV LOCAL_USER=node
+ARG INSTALL_PATH=/app
+ARG LOCAL_USER=node
+
+ARG APT_FILE
+ARG NPM_FILE
+
+# Additional Packages - aptfile
+COPY ./config/apt-files/. /apt-files
+RUN if [ -n "$APT_FILE" ] ; then \
+  apt-get install -yq $(grep -Ev '^\s*#' /apt-files/${APT_FILE} | xargs) ; \
+fi
+
+# NPM
+COPY ./config/npm-files/. /npm-files
+RUN if [ -n "$NPM_FILE" ] ; then \
+  npm install --force -g $(grep -Ev '^\s*#' /npm-files/${NPM_FILE} | xargs) ; \
+fi
 
 # Create a directory where our app will be placed
 RUN mkdir -p ${INSTALL_PATH}
@@ -13,8 +27,5 @@ WORKDIR $INSTALL_PATH
 
 # Install global packages with local user
 USER $LOCAL_USER
-
-# Get all the code needed to run the app
-COPY $APP_PATH/. $INSTALL_PATH/.
 
 CMD ["npm", "run", "start"]
