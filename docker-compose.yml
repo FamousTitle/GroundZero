@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./config/dockerfiles/Dockerfile-node
       args:
-        IMG_VERSION: "16.14.2"
+        IMG_VERSION: "16.15.0"
         NPM_FILE: "web-react"
     ports:
       - "3000:3000"
@@ -27,7 +27,7 @@ services:
       dockerfile: ./config/dockerfiles/Dockerfile-ruby
       args:
         IMG_VERSION: "3.1.2"
-        RAILS_VERSION: "7.0.2.3"
+        RAILS_VERSION: "7.0.2.4"
         APT_FILE: "api-rails"
     ports:
       - "3001:3001"
@@ -44,8 +44,8 @@ services:
       - db-postgres
     stdin_open: true
     tty: true
-  #   to run with byebug:
-  #   docker-compose up -d && docker attach groundzero_api-rails_1
+    #   to run with byebug:
+    #   docker-compose up -d && docker attach groundzero_api-rails_1
     command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3001"
   db-postgres:
     image: postgres:13
