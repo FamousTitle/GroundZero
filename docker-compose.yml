@@ -27,7 +27,7 @@ services:
       dockerfile: ./config/dockerfiles/Dockerfile-ruby
       args:
         IMG_VERSION: "3.1.2"
-        RAILS_VERSION: "7.0.2.4"
+        RAILS_VERSION: "7.0.3"
         APT_FILE: "api-rails"
     ports:
       - "3001:3001"
