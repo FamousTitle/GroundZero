@@ -1,36 +1,16 @@
 version: "3.8"
 
 services:
-  web-react:
-    build:
-      context: .
-      dockerfile: ./config/dockerfiles/Dockerfile-node
-      args:
-        IMG_VERSION: "16.15.0"
-        NPM_FILE: "web-react"
-    ports:
-      - "3000:3000"
-    env_file:
-      - ./config/environments/.web.development.env
-    volumes:
-      - ./services/web-react:/app
-    depends_on:
-      - api-rails
-    stdin_open: true
-    tty: true
-    logging:
-      driver: "json-file"
-    command: bash -c "npm install && npm run dev"
-  api-rails:
+  web-rails:
     build:
       context: .
       dockerfile: ./config/dockerfiles/Dockerfile-ruby
       args:
         IMG_VERSION: "3.1.2"
-        RAILS_VERSION: "7.0.3"
-        APT_FILE: "api-rails"
+        RAILS_VERSION: "7.0.3.1"
+        APT_FILE: "web-rails"
     ports:
-      - "3001:3001"
+      - "3000:3000"
     env_file:
       - ./config/environments/.backend.development.env
       - ./config/environments/.db.development.env
@@ -38,7 +18,7 @@ services:
       driver: "json-file"
     volumes:
       - ~/.ssh:/home/rails/.ssh
-      - ./services/api-rails:/app
+      - ./services/web-rails:/app
       - bundler_gems:/usr/local/bundle/
     depends_on:
       - db-postgres
@@ -46,12 +26,12 @@ services:
     tty: true
     #   to run with byebug:
     #   docker-compose up -d && docker attach groundzero_api-rails_1
-    command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3001"
+    command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000"
   db-postgres:
-    image: postgres:13
+    image: postgres:14.5
     restart: always
     ports:
-      - 3002:5432
+      - 3001:5432
     logging:
       driver: "none"
     volumes:
@@ -62,7 +42,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 3003:8080
+      - 3002:8080
     logging:
       driver: "none"
     depends_on:
