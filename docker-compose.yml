@@ -23,6 +23,7 @@ services:
     volumes:
       - ~/.ssh:/home/rails/.ssh
       - ./services/web-rails:/app
+      - bundled_gems_web_rails:/home/rails/vendor/gems
     depends_on:
       - db-postgres
     stdin_open: true
@@ -52,3 +53,4 @@ services:
       - db-postgres
 volumes:
   db-postgres: {}
+  bundled_gems_web_rails: {}
