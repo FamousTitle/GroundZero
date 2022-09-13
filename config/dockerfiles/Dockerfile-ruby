@@ -9,6 +9,9 @@ ARG NODE_VERSION
 ARG APT_FILE
 ARG NPM_FILE
 
+ARG UID
+ARG GID
+
 RUN apt-get update -qq && apt-get install -y build-essential sudo
 
 # Additional Packages - aptfile
@@ -32,7 +35,7 @@ fi
 WORKDIR $INSTALL_PATH
 
 # Create local user
-RUN useradd -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
+RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
 RUN passwd -d $LOCAL_USER
 RUN usermod -a -G users $LOCAL_USER
 

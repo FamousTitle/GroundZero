@@ -2,9 +2,9 @@
 
 if [ -n "$1" ]; then
 
-  rm -rf ./config log storage tmp
+  rm -rf ./config log storage tmp node_modules vendor
 
-  rails new $1 -d=postgresql -c=tailwind --skip-bundle --skip-git --skip-test --skip-system-test --force
+  rails new $1 -d=postgresql -j=esbuild -c=tailwind --skip-git --skip-test --skip-system-test --force
   mv -n $1/* .
   rm -rf $1
 

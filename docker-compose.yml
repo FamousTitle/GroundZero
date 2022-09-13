@@ -2,7 +2,6 @@ version: "3.8"
 
 services:
   web-rails:
-    user: "0:0"
     build:
       context: .
       dockerfile: ./config/dockerfiles/Dockerfile-ruby
@@ -12,6 +11,8 @@ services:
         APT_FILE: "web-rails"
         NPM_FILE: "web-rails"
         NODE_VERSION: '16'
+        UID: $UID
+        GID: $GID
     ports:
       - "3000:3000"
     env_file:
@@ -22,7 +23,6 @@ services:
     volumes:
       - ~/.ssh:/home/rails/.ssh
       - ./services/web-rails:/app
-      - bundler_gems:/usr/local/bundle/
     depends_on:
       - db-postgres
     stdin_open: true
@@ -52,4 +52,3 @@ services:
       - db-postgres
 volumes:
   db-postgres: {}
-  bundler_gems: {}
