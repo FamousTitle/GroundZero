@@ -9,6 +9,7 @@ services:
         IMG_VERSION: "3.1.2"
         RAILS_VERSION: "7.0.4"
         APT_FILE: "web-rails"
+        NODE_VERSION: '16'
     ports:
       - "3000:3000"
     env_file:
