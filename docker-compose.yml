@@ -30,7 +30,7 @@ services:
     tty: true
     #   to run with byebug:
     #   docker-compose up -d && docker attach groundzero_api-rails_1
-    command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000"
+    command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && ./bin/dev"
   db-postgres:
     image: postgres:14.5
     restart: always
