@@ -6,6 +6,8 @@
 **/*.local.env
 **/*.production.env
 
+services/web-rails/app/assets/builds/*
+
 services/db-mysql/*
 !services/db-mysql/.keep
 
