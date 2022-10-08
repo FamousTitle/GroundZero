@@ -34,6 +34,9 @@ fi
 # Change directory so that our commands run inside this new directory
 WORKDIR $INSTALL_PATH
 
+# Create or Add group
+RUN getent group $GID || groupadd $GID
+
 # Create local user
 RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
 RUN passwd -d $LOCAL_USER
