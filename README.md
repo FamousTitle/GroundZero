@@ -10,7 +10,7 @@
 Clone this starter project
 
 ```
-git clone https://github.com/vleango/GroundZero.git [project_name]
+git clone https://github.com/FamousTitle/GroundZero [project_name]
 ```
 
 Initialize the services
