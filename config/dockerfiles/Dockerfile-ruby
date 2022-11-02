@@ -2,17 +2,13 @@ ARG IMG_VERSION
 FROM ruby:$IMG_VERSION
 
 ARG INSTALL_PATH=/app
-ARG LOCAL_USER=rails
 
 ARG RAILS_VERSION
 ARG NODE_VERSION
 ARG APT_FILE
 ARG NPM_FILE
 
-ARG UID
-ARG GID
-
-RUN apt-get update -qq && apt-get install -y build-essential sudo
+RUN apt-get update -qq && apt-get install -y build-essential
 
 # Additional Packages - aptfile
 COPY ./config/apt-files/. /apt-files
@@ -34,17 +30,8 @@ fi
 # Change directory so that our commands run inside this new directory
 WORKDIR $INSTALL_PATH
 
-# Create or Add group
-RUN getent group $GID || groupadd $GID
-
-# Create local user
-RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
-RUN passwd -d $LOCAL_USER
-RUN usermod -a -G users $LOCAL_USER
-
+# acknowledge sudo warning
 RUN touch /var/lib/sudo/lectured/rails
-
-USER $LOCAL_USER
 
 # Rails
 RUN if [ -n "$RAILS_VERSION" ] ; then \

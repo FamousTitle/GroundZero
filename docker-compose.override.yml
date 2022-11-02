@@ -1,0 +1,10 @@
+services:
+  web-rails:
+    build:
+      context: .
+      dockerfile: ./config/dockerfiles/Dockerfile-web-rails
+      args:
+        UID: 1000
+        GID: 1000
+        # UID: $UID
+        # GID: $GID

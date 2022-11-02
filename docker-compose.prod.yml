@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  web-rails:
+    command: "./prod_start.sh"
+    ports:
+      - 8200:3000

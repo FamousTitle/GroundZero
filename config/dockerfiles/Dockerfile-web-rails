@@ -1,0 +1,16 @@
+FROM vleango/ruby-rails:3.1.2_7.0.4
+
+ARG LOCAL_USER=rails
+
+ARG UID
+ARG GID
+
+# Create or Add group
+RUN getent group $GID || groupadd $GID
+
+# Create local user
+RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
+RUN passwd -d $LOCAL_USER
+RUN usermod -a -G users $LOCAL_USER
+
+USER $LOCAL_USER

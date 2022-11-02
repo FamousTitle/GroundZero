@@ -2,17 +2,7 @@ version: "3.8"
 
 services:
   web-rails:
-    build:
-      context: .
-      dockerfile: ./config/dockerfiles/Dockerfile-ruby
-      args:
-        IMG_VERSION: "3.1.2"
-        RAILS_VERSION: "7.0.4"
-        APT_FILE: "web-rails"
-        NPM_FILE: "web-rails"
-        NODE_VERSION: '16'
-        UID: $UID
-        GID: $GID
+    image: vleango/ruby-rails:3.1.2_7.0.4
     ports:
       - "3000:3000"
     env_file:
@@ -28,8 +18,9 @@ services:
       - db-postgres
     stdin_open: true
     tty: true
-    #   to run with byebug:
-    #   docker-compose up -d && docker attach groundzero_api-rails_1
+    # to run with byebug:
+    # docker-compose up -d && docker attach groundzero_api-rails_1
+    # command: bash -c "rm -f /app/tmp/pids/server.pid && bin/rails server -p 3000 -b 0.0.0.0"
     command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && ./bin/dev"
   db-postgres:
     image: postgres:14.5
