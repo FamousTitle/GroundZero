@@ -25,6 +25,16 @@ Launch the project
 docker-compose up
 ```
 
+## To deploy to heroku
+
+```
+APP_NAME=app_name
+heroku create $APP_NAME
+heroku config:set PROJECT_PATH=services/web-rails --app=$APP_NAME
+heroku buildpacks:set heroku/ruby --app=$APP_NAME
+heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --app=$APP_NAME
+```
+
 ## To rebuild image
 
 ```
