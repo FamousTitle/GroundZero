@@ -16,7 +16,7 @@ git clone https://github.com/FamousTitle/GroundZero [project_name]
 Initialize the services
 
 ```
-./new_app.sh [project_name]
+./new_app.sh [--rails | --nextjs] [project_name]
 ```
 
 Launch the project
