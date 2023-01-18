@@ -38,11 +38,11 @@ heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --a
 ## To rebuild image
 
 ```
-IMG_VERSION=3.1.2
-RAILS_VERSION=7.0.4
+IMG_VERSION=3.2.0
+RAILS_VERSION=7.0.4.1
 APT_FILE=web-rails
 NPM_FILE=web-rails
-NODE_VERSION=16
+NODE_VERSION=18
 TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}
 
 docker build \
@@ -53,7 +53,17 @@ docker build \
   --build-arg NPM_FILE=${NPM_FILE} \
   --build-arg NODE_VERSION=${NODE_VERSION} \
   --file ./config/dockerfiles/Dockerfile-ruby
+```
 
+## Run the image
+
+```
+docker run -it $TAG bash
+```
+
+## Push it to docker hub
+
+```
 docker login
 docker push $TAG
 ```
@@ -67,6 +77,7 @@ docker-compose run --rm api-rails bash
 
 rails db:encryption:init
 ```
+
 - copy the contents to `credentials:edit`
 
 ```
