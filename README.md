@@ -10,7 +10,7 @@
 Clone this starter project
 
 ```
-git clone https://github.com/FamousTitle/GroundZero [project_name]
+git clone git@github.com:FamousTitle/GroundZero.git [project_name]
 ```
 
 Initialize the services
