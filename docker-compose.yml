@@ -22,7 +22,7 @@ services:
   web-rails:
     image: vleango/ruby-rails:3.1.2_7.0.4
     ports:
-      - "3000:3000"
+      - "4000:3000"
     env_file:
       - ./config/environments/.backend.development.env
       - ./config/environments/.db.development.env
