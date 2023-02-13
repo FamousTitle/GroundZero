@@ -60,6 +60,15 @@ services:
       driver: "none"
     depends_on:
       - db-postgres
+  graphiql:
+    image: plutoz/graphiql
+    ports:
+      - 4001:4000
+    # visit: http://localhost:4001/graphql
+    environment:
+      - API_URL=localhost:4000/graphql
+    depends_on:
+      - web-rails
 volumes:
   db-postgres: {}
   bundled_gems_web_rails: {}
