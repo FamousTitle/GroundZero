@@ -11,7 +11,8 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./config/environments/.web.development.env
+      - ./config/environments/.nextjs.env
+      - ./config/environments/.nextjs.local.env
     volumes:
       - ./services/web-nextjs:/app
     stdin_open: true
@@ -24,8 +25,9 @@ services:
     ports:
       - "4000:3000"
     env_file:
-      - ./config/environments/.backend.development.env
-      - ./config/environments/.db.development.env
+      - ./config/environments/.rails.env
+      - ./config/environments/.rails.local.env
+      - ./config/environments/.db.env
     logging:
       driver: "json-file"
     volumes:
@@ -50,7 +52,7 @@ services:
     volumes:
       - db-postgres:/var/lib/postgresql/data
     env_file:
-      - ./config/environments/.db.development.env
+      - ./config/environments/.db.env
   db-admin:
     image: adminer
     restart: always

@@ -19,6 +19,13 @@ Initialize the services
 ./new_app.sh [--rails | --nextjs] [project_name]
 ```
 
+Create local env files
+
+```
+cp config/environments/.rails.env config/environments/.rails.local.env
+cp config/environments/.nextjs.env config/environments/.nextjs.local.env
+```
+
 Launch the project
 
 ```
@@ -67,6 +74,7 @@ docker-compose run --rm api-rails bash
 
 rails db:encryption:init
 ```
+
 - copy the contents to `credentials:edit`
 
 ```
