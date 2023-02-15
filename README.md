@@ -13,17 +13,17 @@ Clone this starter project
 git clone git@github.com:FamousTitle/GroundZero.git [project_name]
 ```
 
-Initialize the services
-
-```
-./new_app.sh [--rails | --nextjs] [project_name]
-```
-
 Create local env files
 
 ```
 cp config/environments/.rails.env config/environments/.rails.local.env
 cp config/environments/.nextjs.env config/environments/.nextjs.local.env
+```
+
+Initialize the services
+
+```
+./new_app.sh [--rails | --nextjs] [project_name]
 ```
 
 Launch the project
