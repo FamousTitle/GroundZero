@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  web-nextjs:
+    env_file:
+      - ./config/environments/.nextjs.env
+      - ./config/environments/.nextjs.prod.env
