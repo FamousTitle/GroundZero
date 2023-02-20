@@ -42,13 +42,29 @@ heroku buildpacks:set heroku/ruby --app=$APP_NAME
 heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --app=$APP_NAME
 ```
 
-## To rebuild image
+## To rebuild the web-nextjs image
+
+```
+IMG_VERSION=18.14.1
+NPM_FILE=web-nextjs
+TAG=vleango/node:${IMG_VERSION}
+
+docker build \
+  --tag $TAG . \
+  --build-arg IMG_VERSION=${IMG_VERSION} \
+  --build-arg NPM_FILE=${NPM_FILE} \
+  --file ./config/dockerfiles/Dockerfile-node
+
+docker login
+docker push $TAG
+```
+
+## To rebuild the web-rails image
 
 ```
 IMG_VERSION=3.2.1
 RAILS_VERSION=7.0.4.2
 APT_FILE=web-rails
-NPM_FILE=
 NODE_VERSION=18
 TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}
 
@@ -57,7 +73,6 @@ docker build \
   --build-arg IMG_VERSION=${IMG_VERSION} \
   --build-arg RAILS_VERSION=${RAILS_VERSION} \
   --build-arg APT_FILE=${APT_FILE} \
-  --build-arg NPM_FILE=${NPM_FILE} \
   --build-arg NODE_VERSION=${NODE_VERSION} \
   --file ./config/dockerfiles/Dockerfile-ruby
 

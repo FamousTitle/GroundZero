@@ -2,12 +2,7 @@ version: "3.8"
 
 services:
   web-nextjs:
-    build:
-      context: .
-      dockerfile: ./config/dockerfiles/Dockerfile-node
-      args:
-        IMG_VERSION: "18.14.1"
-        NPM_FILE: "web-nextjs"
+    image: vleango/node:18.14.1
     ports:
       - "3000:3000"
     env_file:
