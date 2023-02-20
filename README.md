@@ -45,11 +45,11 @@ heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --a
 ## To rebuild image
 
 ```
-IMG_VERSION=3.1.2
-RAILS_VERSION=7.0.4
+IMG_VERSION=3.2.1
+RAILS_VERSION=7.0.4.2
 APT_FILE=web-rails
-NPM_FILE=web-rails
-NODE_VERSION=16
+NPM_FILE=
+NODE_VERSION=18
 TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}
 
 docker build \
