@@ -8,7 +8,7 @@ if [ -n "$1" ]; then
   mv -n $1/* .
   rm -rf $1
 
-  echo "gem 'famoustitle_rails', git: 'https://github.com/FamousTitle/famoustitle-rails', ref: '3bf09976b9162c5adc83d1fa1a159503a8f5174e'" >> /app/Gemfile
+  echo "gem 'famoustitle_rails', git: 'https://github.com/FamousTitle/famoustitle-rails', ref: 'eda53b73d6054360cc44f8fecf1dd67924add2bd'" >> /app/Gemfile
   bundle
 
   rails g famoustitle_rails:install
