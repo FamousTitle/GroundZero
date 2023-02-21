@@ -1,29 +1,12 @@
-ARG IMG_VERSION
-FROM node:$IMG_VERSION
+FROM node:18.14.1
 
-ARG INSTALL_PATH=/app
 ARG LOCAL_USER=node
 
-ARG APT_FILE
-ARG NPM_FILE
-
-# Additional Packages - aptfile
-COPY ./config/apt-files/. /apt-files
-RUN if [ -n "$APT_FILE" ] ; then \
-  apt-get install -yq $(grep -Ev '^\s*#' /apt-files/${APT_FILE} | xargs) ; \
-fi
-
 # NPM
-COPY ./config/npm-files/. /npm-files
-RUN if [ -n "$NPM_FILE" ] ; then \
-  npm install --force -g $(grep -Ev '^\s*#' /npm-files/${NPM_FILE} | xargs) ; \
-fi
-
-# Create a directory where our app will be placed
-RUN mkdir -p ${INSTALL_PATH}
+RUN npm install --force -g npm@9.5.0 yarn
 
 # Change directory so that our commands run inside this new directory
-WORKDIR $INSTALL_PATH
+WORKDIR /app
 
 # Install global packages with local user
 USER $LOCAL_USER

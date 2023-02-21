@@ -46,13 +46,10 @@ heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --a
 
 ```
 IMG_VERSION=18.14.1
-NPM_FILE=web-nextjs
 TAG=vleango/node:${IMG_VERSION}
 
 docker build \
   --tag $TAG . \
-  --build-arg IMG_VERSION=${IMG_VERSION} \
-  --build-arg NPM_FILE=${NPM_FILE} \
   --file ./config/dockerfiles/Dockerfile-node
 
 docker login
@@ -64,16 +61,11 @@ docker push $TAG
 ```
 IMG_VERSION=3.2.1
 RAILS_VERSION=7.0.4.2
-APT_FILE=web-rails
-NODE_VERSION=18
 TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}
 
 docker build \
   --tag $TAG . \
-  --build-arg IMG_VERSION=${IMG_VERSION} \
-  --build-arg RAILS_VERSION=${RAILS_VERSION} \
-  --build-arg APT_FILE=${APT_FILE} \
-  --build-arg NODE_VERSION=${NODE_VERSION} \
+  --no-cache \
   --file ./config/dockerfiles/Dockerfile-ruby
 
 docker login

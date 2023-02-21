@@ -1,41 +1,33 @@
-ARG IMG_VERSION
-FROM ruby:$IMG_VERSION
+FROM ruby:3.2.1
 
-ARG INSTALL_PATH=/app
+ARG LOCAL_USER=rails
+ARG UID=1000
+ARG GID=1000
 
-ARG RAILS_VERSION
-ARG NODE_VERSION
-ARG APT_FILE
-ARG NPM_FILE
-
-RUN apt-get update -qq && apt-get install -y build-essential
-
-# Additional Packages - aptfile
-COPY ./config/apt-files/. /apt-files
-RUN if [ -n "$APT_FILE" ] ; then \
-  apt-get install -yq $(grep -Ev '^\s*#' /apt-files/${APT_FILE} | xargs) ; \
-fi
-
-# Nodejs
-RUN if [ -n "$NODE_VERSION" ] ; then \
-  curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && apt-get install -y nodejs ; \
-fi
-
-# NPM
-COPY ./config/npm-files/. /npm-files
-RUN if [ -n "$NPM_FILE" ] ; then \
-  npm install --force -g $(grep -Ev '^\s*#' /npm-files/${NPM_FILE} | xargs) ; \
-fi
-
-# Change directory so that our commands run inside this new directory
-WORKDIR $INSTALL_PATH
+RUN apt-get update -qq && apt-get install -y build-essential sudo vim
 
 # acknowledge sudo warning
-RUN touch /var/lib/sudo/lectured/rails
+RUN touch /var/lib/sudo/lectured/${LOCAL_USER}}
+
+# Create or Add group
+RUN getent group $GID || groupadd $GID
+
+# Create local user
+RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
+RUN passwd -d $LOCAL_USER
+RUN usermod -a -G users $LOCAL_USER
+
+USER $LOCAL_USER
+
+# Nodejs
+RUN curl -sL https://deb.nodesource.com/setup_18.x | sudo bash - && sudo apt-get install -y nodejs
 
 # Rails
-RUN if [ -n "$RAILS_VERSION" ] ; then \
-  gem install rails -v=$RAILS_VERSION --no-document ; \
-fi
+RUN gem install rails -v=7.0.4.2 --no-document
+
+# NPM
+RUN sudo npm install --force -g npm@9.5.0 yarn
+
+WORKDIR /app
 
 CMD ["bundle", "exec", "rails", "server"]
