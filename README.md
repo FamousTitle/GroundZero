@@ -61,7 +61,8 @@ docker push $TAG
 ```
 IMG_VERSION=3.2.1
 RAILS_VERSION=7.0.4.2
-TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}
+REVISION_VERSION=1
+TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}_${REVISION_VERSION}
 
 docker build \
   --tag $TAG . \
