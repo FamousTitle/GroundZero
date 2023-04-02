@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   web-nextjs:
-    image: vleango/node:18.14.1
+    image: vleango/node:18.15.0_1
     ports:
       - "3000:3000"
     env_file:
@@ -16,7 +16,7 @@ services:
       driver: "json-file"
     command: bash -c "npm install && npm run dev"
   web-rails:
-    image: vleango/ruby-rails:3.2.1_7.0.4.2_1
+    image: vleango/ruby-rails:3.2.2_7.0.4.3_1
     ports:
       - "4000:3000"
     env_file:
