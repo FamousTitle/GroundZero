@@ -8,10 +8,12 @@ if [ -n "$1" ]; then
   mv -n $1/* .
   rm -rf $1
 
-  echo "gem 'famoustitle_rails', git: 'https://github.com/FamousTitle/famoustitle-rails', ref: '655c9a617f258da593cd2ca4ae1b38c288e994ed'" >> /app/Gemfile
+  echo "gem 'famoustitle_rails', git: 'https://github.com/FamousTitle/famoustitle-rails', ref: '7215058883757ae2eecda808e8662120366ca550'" >> /app/Gemfile
   bundle
 
   rails g famoustitle_rails:install
+
+  rake db:create db:migrate
 
   echo "$1 api-rails created!"
 else
