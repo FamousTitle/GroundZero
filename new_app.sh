@@ -7,6 +7,10 @@ if [ -n "$2" ]; then
 
   if [ "$1" == "--rails" ]
   then
+    echo "Removing old docker containers and resources..."
+    docker container ls -aq | xargs docker container rm -f && docker volume ls -q | xargs docker volume rm && docker network ls -q | xargs docker network rm
+    echo "done!"
+
     docker-compose run --rm web-rails ./new_app.sh $2
   elif [ "$1" == "--nextjs" ]
   then
