@@ -45,8 +45,8 @@ heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --a
 ## To rebuild the web-nextjs image
 
 ```
-IMG_VERSION=18.15.0
-REVISION_VERSION=1
+IMG_VERSION=20.10.0
+REVISION_VERSION=2
 TAG=vleango/node:${IMG_VERSION}_${REVISION_VERSION}
 
 docker build \
