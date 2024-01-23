@@ -10,7 +10,7 @@ services:
       - ./config/environments/.web.local.env
       - ./config/environments/.db.env
     volumes:
-      - ../famoustitle-strapi/services/web:/app
+      - ../CMS/services/web:/app
     stdin_open: true
     tty: true
     logging:
