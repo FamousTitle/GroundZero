@@ -18,6 +18,7 @@ Create local env files
 ```
 cp config/environments/.rails.env config/environments/.rails.local.env
 cp config/environments/.nextjs.env config/environments/.nextjs.local.env
+cp config/environments/.web.env config/environments/.web.local.env
 ```
 
 Initialize the services
