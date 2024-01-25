@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_stats_split_with_images",
+  "info": {
+    "displayName": "SplitWithImage",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "list.item"
+    },
+    "image1": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pricing_tier_items",
+  "info": {
+    "singularName": "pricing-tier-item",
+    "pluralName": "pricing-tier-items",
+    "displayName": "pricingTierItem"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    }
+  }
+}

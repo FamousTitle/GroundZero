@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_logo_cloud_logo_items",
+  "info": {
+    "displayName": "LogoItem",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

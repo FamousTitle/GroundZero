@@ -1,0 +1,45 @@
+{
+  "collectionName": "components_blog_items",
+  "info": {
+    "displayName": "item",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "published": {
+      "type": "date"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "author": {
+      "type": "string"
+    },
+    "authorTagline": {
+      "type": "string"
+    },
+    "blogImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "authorImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

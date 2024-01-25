@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_team_full_width_with_vertical_images",
+  "info": {
+    "displayName": "FullWidthWithVerticalImages",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "list.item-3"
+    }
+  }
+}

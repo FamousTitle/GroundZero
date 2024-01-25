@@ -1,16 +1,16 @@
 version: "3.8"
 
 services:
-  cms:
+  web-cms:
     image: vleango/node:20.10.0_2
     ports:
       - "3003:1337"
     env_file:
-      - ./config/environments/.web.env
-      - ./config/environments/.web.local.env
+      - ./config/environments/.cms.env
+      - ./config/environments/.cms.local.env
       - ./config/environments/.db.env
     volumes:
-      - ../CMS/services/web:/app
+      - ./services/web-cms:/app
     stdin_open: true
     tty: true
     logging:
@@ -33,7 +33,7 @@ services:
       driver: "json-file"
     command: bash -c "npm install && npm run dev"
     depends_on:
-      - cms
+      - web-cms
   web-rails:
     image: vleango/ruby-rails:3.2.2_7.0.4.3_1
     ports:

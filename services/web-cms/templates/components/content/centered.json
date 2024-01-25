@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_content_centereds",
+  "info": {
+    "displayName": "Centered"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext"
+    }
+  }
+}

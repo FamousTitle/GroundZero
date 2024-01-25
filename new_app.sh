@@ -15,6 +15,9 @@ if [ -n "$2" ]; then
   elif [ "$1" == "--nextjs" ]
   then
     docker-compose run --rm web-nextjs ./new_app.sh $2
+  elif [ "$1" == "--cms" ]
+  then
+    docker-compose run --rm web-cms ./new_app.sh $2
   else
     echo "none"
   fi

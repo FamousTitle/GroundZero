@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_contact_items",
+  "info": {
+    "displayName": "items",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "line1": {
+      "type": "string"
+    },
+    "line2": {
+      "type": "string"
+    },
+    "image1": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

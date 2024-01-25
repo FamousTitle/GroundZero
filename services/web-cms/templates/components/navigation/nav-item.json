@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_navigation_nav_items",
+  "info": {
+    "displayName": "NavItem"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

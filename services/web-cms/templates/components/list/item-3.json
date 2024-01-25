@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_list_item_3_s",
+  "info": {
+    "displayName": "Item (3)",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "line1": {
+      "type": "text"
+    },
+    "line2": {
+      "type": "text"
+    },
+    "image1": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

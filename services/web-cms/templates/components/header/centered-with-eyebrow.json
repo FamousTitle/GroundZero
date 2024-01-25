@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_header_centered_with_eyebrows",
+  "info": {
+    "displayName": "CenteredWithEyebrow"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_logo_cloud_split_with_logos_on_rights",
+  "info": {
+    "displayName": "SplitWithLogosOnRight",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "primaryButton": {
+      "type": "string"
+    },
+    "secondaryButton": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "logo-cloud.logo-item"
+    }
+  }
+}

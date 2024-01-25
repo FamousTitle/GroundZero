@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_navigation_simple_with_logins",
+  "info": {
+    "displayName": "SimpleWithLogin",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "login": {
+      "type": "string"
+    },
+    "loginUrl": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.nav-item"
+    }
+  }
+}

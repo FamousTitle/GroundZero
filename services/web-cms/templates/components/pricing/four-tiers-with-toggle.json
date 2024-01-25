@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_pricing_four_tiers_with_toggles",
+  "info": {
+    "displayName": "FourTiersWithToggle",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "toggle1": {
+      "type": "string"
+    },
+    "toggle2": {
+      "type": "string"
+    },
+    "pricingTier": {
+      "type": "component",
+      "repeatable": true,
+      "component": "pricing.tier"
+    }
+  }
+}
