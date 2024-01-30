@@ -18,13 +18,19 @@ Create local env files
 ```
 cp config/environments/.rails.env config/environments/.rails.local.env
 cp config/environments/.nextjs.env config/environments/.nextjs.local.env
-cp config/environments/.web.env config/environments/.cms.local.env
+cp config/environments/.cms.env config/environments/.cms.local.env
 ```
 
 Initialize the services
 
 ```
 ./new_app.sh [--rails | --nextjs | --cms] [project_name]
+```
+
+Create CMS Database (optional)
+
+```
+Log to Adminer (http://localhost:3002/) and create the database (cms-db)
 ```
 
 Launch the project

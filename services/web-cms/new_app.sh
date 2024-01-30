@@ -8,6 +8,8 @@ if [ -n "$1" ]; then
   mv -n $1/* .
   rm -rf $1
 
+  npm run strapi install graphql
+
   echo "$1 web-cms created!"
 else
   echo "Need to set a project name!"
