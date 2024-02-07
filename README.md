@@ -69,8 +69,8 @@ docker push $TAG
 ## To rebuild the web-rails image
 
 ```
-IMG_VERSION=3.2.2
-RAILS_VERSION=7.0.4.3
+IMG_VERSION=3.3.0
+RAILS_VERSION=7.1.3
 REVISION_VERSION=1
 TAG=vleango/ruby-rails:${IMG_VERSION}_${RAILS_VERSION}_${REVISION_VERSION}
 
