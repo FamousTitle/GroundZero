@@ -35,7 +35,7 @@ services:
     depends_on:
       - web-cms
   web-rails:
-    image: vleango/ruby-rails:3.3.0_7.1.3_2
+    image: vleango/ruby-rails:3.3.0_7.1.3_3
     ports:
       - "4000:3000"
     env_file:
