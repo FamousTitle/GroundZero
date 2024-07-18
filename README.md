@@ -17,20 +17,12 @@ Create local env files
 
 ```
 cp config/environments/.rails.env config/environments/.rails.local.env
-cp config/environments/.nextjs.env config/environments/.nextjs.local.env
-cp config/environments/.cms.env config/environments/.cms.local.env
 ```
 
 Initialize the services
 
 ```
-./new_app.sh [--rails | --nextjs | --cms] [project_name]
-```
-
-Create CMS Database (optional)
-
-```
-Log to Adminer (http://localhost:3002/) and create the database (cms-db)
+./new_app.sh [--rails] [project_name]
 ```
 
 Launch the project
@@ -48,23 +40,6 @@ heroku config:set PROJECT_PATH=services/web-rails --app=$APP_NAME
 heroku buildpacks:set heroku/ruby --app=$APP_NAME
 heroku buildpacks:set https://github.com/vleango/subdir-heroku-buildpack.git --app=$APP_NAME
 ```
-
-## To rebuild the web-nextjs image
-
-```
-IMG_VERSION=20.10.0
-REVISION_VERSION=2
-TAG=vleango/node:${IMG_VERSION}_${REVISION_VERSION}
-
-docker build \
-  --tag $TAG . \
-  --file ./config/dockerfiles/Dockerfile-node
-
-docker login
-docker push $TAG
-```
-
-- make sure to update Dockerfile-node if any version was updated
 
 ## To rebuild the web-rails image
 
@@ -147,9 +122,9 @@ i.e. the `api-rails` container
 docker-compose run --rm api-rails bash
 ```
 
-## Need to use byebug?
+## Need to use debugger?
 
-To run with `byebug`, you will need to launch all containers in the background, but attach the rails container
+To run with `debugger`, you will need to launch all containers in the background, but attach the rails container
 
 ```
 docker-compose up -d && docker attach famoustitle_api-rails_1
