@@ -13,9 +13,9 @@ if [ -n "$1" ]; then
 
   rails g famoustitle_rails:install
 
-  rake db:create db:migrate db:seed
+  bundle exec rake db:clean
 
-  echo "$1 api-rails created!"
+  echo "$1 api-web created!"
 else
   echo "Need to set a project name!"
 fi
