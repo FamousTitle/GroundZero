@@ -130,6 +130,12 @@ To run with `debugger`, you will need to launch all containers in the background
 docker-compose up -d && docker attach famoustitle_api-rails_1
 ```
 
+## resetting docker
+
+```
+alias docker-reset='docker container ls -aq | xargs docker container rm -f && docker volume ls -q | xargs docker volume rm && docker network ls -q | xargs docker network rm'
+```
+
 ## Need to rebuild the containers? Or start from scratch?
 
 Delete all containers
