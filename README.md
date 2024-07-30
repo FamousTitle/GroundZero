@@ -13,13 +13,6 @@ Clone this starter project
 git clone git@github.com:FamousTitle/GroundZero.git [project_name]
 ```
 
-Create local files
-
-```
-cp config/environments/.rails.env config/environments/.rails.local.env
-touch services/web-rails/app/javascript/controllers/local_controllers/index.js
-```
-
 Initialize the services
 
 ```

@@ -11,7 +11,16 @@ if [ -n "$2" ]; then
     docker container ls -aq | xargs docker container rm -f && docker volume ls -q | xargs docker volume rm && docker network ls -q | xargs docker network rm
     echo "done!"
 
+    echo "copy .rails.env to .rails.local.env"
+    cp config/environments/.rails.env config/environments/.rails.local.env
+
     docker-compose run --rm web-rails ./new_app.sh $2
+
+    echo "touch /app/javascript/controllers/local_controllers/index.js"
+    mkdir -p services/web-rails/app/javascript/controllers/local_controllers
+    touch services/web-rails/app/javascript/controllers/local_controllers/index.js
+
+
   elif [ "$1" == "--nextjs" ]
   then
     docker-compose run --rm web-nextjs ./new_app.sh $2
