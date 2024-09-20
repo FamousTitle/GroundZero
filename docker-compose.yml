@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   web-rails:
-    image: vleango/ruby-rails:3.3.0_7.1.3_3
+    build:
+      context: .
+      dockerfile: config/dockerfiles/Dockerfile-ruby
     ports:
       - "4000:3000"
     env_file:
@@ -15,33 +17,33 @@ services:
       - ~/.ssh:/home/rails/.ssh
       - ./services/web-rails:/app
       # - bundled_gems_web_rails:/app/vendor/gems
-    depends_on:
-      - db-postgres
+    # depends_on:
+    #   - db-postgres
     stdin_open: true
     tty: true
     # to run with byebug:
     # docker-compose up -d && docker attach groundzero_api-rails_1
     # command: bash -c "rm -f /app/tmp/pids/server.pid && bin/rails server -p 3000 -b 0.0.0.0"
     command: bash -c "bundle check || bundle install --without production && rm -f /app/tmp/pids/server.pid && ./bin/dev"
-  db-postgres:
-    image: postgres:14.5
-    restart: always
-    ports:
-      - 3001:5432
-    logging:
-      driver: "none"
-    volumes:
-      - db-postgres:/var/lib/postgresql/data
-    env_file:
-      - ./config/environments/.db.env
-  db-admin:
-    image: adminer
-    restart: always
-    ports:
-      - 3002:8080
-    logging:
-      driver: "none"
-    depends_on:
-      - db-postgres
+  # db-postgres:
+  #   image: postgres:14.5
+  #   restart: always
+  #   ports:
+  #     - 3001:5432
+  #   logging:
+  #     driver: "none"
+  #   volumes:
+  #     - db-postgres:/var/lib/postgresql/data
+  #   env_file:
+  #     - ./config/environments/.db.env
+  # db-admin:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 3002:8080
+  #   logging:
+  #     driver: "none"
+  #   depends_on:
+  #     - db-postgres
 volumes:
   db-postgres: {}
