@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+# Check if app name argument is provided
+if ARGV.empty?
+  puts "Error: Missing arguments"
+  puts "Usage: ./run.rb COMMAND"
+  puts "Commands: sh, debugger, up, down, logs, db_clean"
+  exit 1
+end
+
+command = ARGV.join(' ')
+
+case command
+when "sh"
+  system("docker-compose run --rm web-rails bash")
+when "debugger"
+  system("docker-compose up -d && docker attach web-rails")
+when "up"
+  system("docker-compose up")
+when "down"
+  system("docker-compose down")
+when "logs"
+  system("docker-compose logs -f")
+when "db_clean"
+  system("docker-compose run --rm web-rails bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
+else
+  system("docker-compose run --rm web-rails bash -c 'bundle exec #{command}'")
+end

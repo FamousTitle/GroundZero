@@ -1,0 +1,58 @@
+x-app: &default
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  env_file:
+    - .env
+    - .web-rails.local.env
+    - .db.env
+  logging:
+    driver: "json-file"
+  volumes:
+    - ~/.ssh:/home/rails/.ssh
+    - .:/app
+    - bundled_gems_web_rails:/app/vendor/gems
+  depends_on:
+    - db
+  stdin_open: true
+  tty: true
+
+services:
+  web-rails:
+    <<: *default
+    container_name: web-rails
+    ports:
+      - "4000:3000"
+    depends_on:
+      # - css # comment out unless install tailwindcss
+      - js
+    command: "bash -c 'rm -f /app/tmp/pids/server.pid && bin/rails server -p 3000 -b 0.0.0.0'"
+  # css:
+  #   <<: *default
+  #   command: "bin/rails tailwindcss:watch" # comment out unless install tailwindcss
+  js:
+    <<: *default
+    command: "yarn build --watch"
+  db:
+    image: postgres:14.5
+    restart: always
+    logging:
+      driver: "none"
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - .db.env
+  db-admin:
+    image: adminer
+    restart: always
+    ports:
+      - "4001:8080"
+    logging:
+      driver: "none"
+    environment:
+      ADMINER_DESIGN: pepa-linha
+    depends_on:
+      - db
+volumes:
+  db: {}
+  bundled_gems_web_rails: {}

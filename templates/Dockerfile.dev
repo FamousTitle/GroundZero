@@ -1,0 +1,43 @@
+ARG RUBY_VERSION=3.4.2
+FROM ruby:${RUBY_VERSION}
+
+ARG LOCAL_USER=rails
+ARG NODE_VERSION=22
+ARG RAILS_VERSION=8.0.2
+ARG NPM_VERSION=latest
+ARG YARN_VERSION=1.22.22
+ARG UID=1000
+ARG GID=1000
+
+RUN apt-get update -qq && apt-get install -y build-essential sudo vim libvips-dev watchman
+
+# acknowledge sudo warning
+RUN touch /var/lib/sudo/lectured/${LOCAL_USER}
+
+# Create or Add group
+RUN getent group $GID || groupadd $GID
+
+# Create local user
+RUN useradd -u $UID -g $GID -m $LOCAL_USER && echo "${LOCAL_USER}:${LOCAL_USER}" | chpasswd && adduser $LOCAL_USER sudo
+RUN passwd -d $LOCAL_USER
+RUN usermod -a -G users $LOCAL_USER
+
+USER $LOCAL_USER
+
+# Nodejs - needed for yarn
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | sudo bash - && sudo apt-get install -y nodejs
+
+# Rails
+RUN gem install rails -v=${RAILS_VERSION} --no-document
+
+# NPM - yarn needed for rails new esbuild
+RUN sudo npm install --force -g npm@${NPM_VERSION} yarn@$YARN_VERSION
+
+# Setup aliases
+RUN echo "alias rails='bundle exec rails'" >> ~/.bashrc
+RUN echo "alias rspec='bundle exec rspec'" >> ~/.bashrc
+RUN echo "alias rake='bundle exec rake'" >> ~/.bashrc
+
+WORKDIR /app
+
+CMD ["bundle", "exec", "rails", "server"]
