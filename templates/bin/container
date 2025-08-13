@@ -10,11 +10,14 @@ end
 
 command = ARGV.join(' ')
 
+app_name = File.basename(File.expand_path('..', __dir__))
+service_name = "web-rails"
+
 case command
 when "sh"
-  system("docker-compose run --rm web-rails bash")
+  system("docker-compose run --rm #{service_name} bash")
 when "debugger"
-  system("docker-compose up -d && docker attach web-rails")
+  system("docker-compose up -d && docker attach #{app_name}-#{service_name}-1")
 when "up"
   system("docker-compose up")
 when "down"
@@ -22,7 +25,7 @@ when "down"
 when "logs"
   system("docker-compose logs -f")
 when "db_clean"
-  system("docker-compose run --rm web-rails bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
+  system("docker-compose run --rm #{service_name} bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
 else
-  system("docker-compose run --rm web-rails bash -c 'bundle exec #{command}'")
+  system("docker-compose run --rm #{service_name} bash -c 'bundle exec #{command}'")
 end

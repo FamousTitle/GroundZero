@@ -20,7 +20,6 @@ x-app: &default
 services:
   web-rails:
     <<: *default
-    container_name: web-rails
     ports:
       - "4000:3000"
     depends_on:
