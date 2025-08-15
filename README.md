@@ -58,3 +58,7 @@ class TailwindcssAddon
   end
 end
 ```
+
+### Fresh App
+
+If you are starting a new ground_zero app, make sure you setup by running `bin/container fresh_app`

@@ -15,17 +15,26 @@ service_name = "web-rails"
 
 case command
 when "sh"
-  system("docker-compose run --rm #{service_name} bash")
+  system("docker compose run --rm #{service_name} bash")
 when "debugger"
-  system("docker-compose up -d && docker attach #{app_name}-#{service_name}-1")
+  system("docker compose up -d && docker attach #{app_name}-#{service_name}-1")
 when "up"
-  system("docker-compose up")
+  system("docker compose up")
 when "down"
-  system("docker-compose down")
+  system("docker compose down")
 when "logs"
-  system("docker-compose logs -f")
+  system("docker compose logs -f")
 when "db_clean"
-  system("docker-compose run --rm #{service_name} bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
+  system("docker compose run --rm #{service_name} bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
+when "fresh_app"
+  puts "Add .web-rails.local.env"
+  system("touch .web-rails.local.env")
+
+  puts "fix permissions for install gems"
+  system("docker compose run --rm #{service_name} bash -c 'sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'")
+
+  puts "setup db"
+  system("docker compose run --rm #{service_name} bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
 else
-  system("docker-compose run --rm #{service_name} bash -c 'bundle exec #{command}'")
+  system("docker compose run --rm #{service_name} bash -c 'bundle exec #{command}'")
 end
