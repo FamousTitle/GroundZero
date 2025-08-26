@@ -4,7 +4,7 @@ x-app: &default
     dockerfile: Dockerfile.dev
   env_file:
     - .env
-    - .web-rails.local.env
+    - .local.env
     - .db.env
   logging:
     driver: "json-file"

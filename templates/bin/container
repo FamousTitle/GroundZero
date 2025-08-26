@@ -27,8 +27,8 @@ when "logs"
 when "db_clean"
   system("docker compose run --rm #{service_name} bash -c 'bin/rails db:drop db:create db:migrate db:seed'")
 when "fresh_app"
-  puts "Add .web-rails.local.env"
-  system("touch .web-rails.local.env")
+  puts "Add .local.env"
+  system("touch .local.env")
 
   puts "fix permissions for install gems"
   system("docker compose run --rm #{service_name} bash -c 'sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'")

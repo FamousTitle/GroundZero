@@ -105,6 +105,9 @@ end
 # Start the recursive copy
 copy_recursively(template_dir, app_dir, template_dir)
 
+# add *.local.env to .gitignore
+system("echo '*.local.env' >> #{app_dir}/.gitignore")
+
 puts "Template files copied successfully"
 
 # inside web-rails if there are permission issues

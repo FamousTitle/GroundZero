@@ -1,5 +1,15 @@
 # Ground Zero
 
+## Fresh App
+
+If you are onboarding from a ground_zero app (i.e. not setting up a new app), all you need to run is
+
+```bash
+bin/container fresh_app
+```
+
+The following steps below are for setting up a new app
+
 ## Prerequisites (local machine)
 
 - Docker
@@ -58,7 +68,3 @@ class TailwindcssAddon
   end
 end
 ```
-
-### Fresh App
-
-If you are starting a new ground_zero app, make sure you setup by running `bin/container fresh_app`
