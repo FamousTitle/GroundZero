@@ -11,8 +11,8 @@ class RspecAddon < Base
     run "bundle add capybara --group development,test"
     
     # Add Capybara configuration to spec files
-    run "echo \"require 'capybara/rails'\" | cat - spec/rails_helper.rb > temp && mv temp spec/rails_helper.rb"
-    run "echo \"require 'capybara/rspec'\" | cat - spec/spec_helper.rb > temp && mv temp spec/spec_helper.rb"
+    run 'echo "require \'capybara/rails\'" | cat - spec/rails_helper.rb > temp && mv temp spec/rails_helper.rb'
+    run 'echo "require \'capybara/rspec\'" | cat - spec/spec_helper.rb > temp && mv temp spec/spec_helper.rb'
 
   end
 end
