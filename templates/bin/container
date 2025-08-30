@@ -18,7 +18,7 @@ command_debugger = "docker compose up -d && docker attach #{app_name}-#{service_
 command_up = "docker compose up"
 command_down = "docker compose down"
 command_logs = "docker compose logs -f"
-command_db_clean = "docker compose run --rm #{service_name} bash -c 'rm db/schema.rb && bin/rails db:drop db:create db:migrate db:seed'"
+command_db_clean = "docker compose run --rm #{service_name} bash -c 'rm -f db/schema.rb && bin/rails db:drop db:create db:migrate db:seed'"
 command_fresh_app = "docker compose run --rm #{service_name} bash -c 'touch .local.env && sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'"
 command_run = "docker compose run --rm #{service_name} bash -c 'bundle exec #{command}'"
 
