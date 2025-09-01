@@ -14,14 +14,14 @@ Dir.glob(File.join(addons_dir, "*.rb")).each do |addon_file|
   require_relative addon_file
 end
 
-CMD_IN_CONTAINER = "docker-compose run --rm --remove-orphans web-rails bash -c "
+CMD_IN_CONTAINER = "docker compose run --rm --remove-orphans web-rails bash -c "
 
 # Check if required tools are installed
 # Initialize an array to store missing tools
 missing_tools = []
 
 # Define tools to check
-tools = ["ruby", "rails", "docker", "docker-compose", "yarn"]
+tools = ["ruby", "rails", "docker", "yarn"]
 
 # Check each tool
 tools.each do |command_name|
