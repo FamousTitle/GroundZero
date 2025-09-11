@@ -50,6 +50,14 @@ Or install all addons:
 ./setup.rb APP_NAME --all
 ```
 
+Current available addons:
+
+- alpinejs
+- authenticate
+- phlex
+- rspec
+- tailwindcss
+
 ### Creating Custom Addons
 
 You can create your own addons by adding a Ruby file to the `addons` directory:
