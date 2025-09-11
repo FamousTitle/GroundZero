@@ -113,6 +113,13 @@ puts "Template files copied successfully"
 # inside web-rails if there are permission issues
 puts "Changing to application directory: #{app_dir}"
 Dir.chdir(app_dir) do
+
+  puts "docker-compose.yml - use unique volume names per project"
+  docker_compose_path = "docker-compose.yml"
+  content = File.read(docker_compose_path)
+  content.gsub!(/bundled_gems_web_rails/, "bundled_gems_web_rails_#{app_name}")
+  File.write(docker_compose_path, content)
+
   system("#{CMD_IN_CONTAINER} 'sudo chown -R rails:1000 /app/vendor/gems'")
   system("#{CMD_IN_CONTAINER} 'bundle add dotenv --group=development'")
   system("#{CMD_IN_CONTAINER} 'yarn install'")
