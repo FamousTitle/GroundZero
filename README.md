@@ -30,6 +30,18 @@ chmod +x setup.rb
 ./setup.rb APP_NAME
 ```
 
+## Run script for api apps
+
+```bash
+setup.rb APP_NAME --api
+```
+
+## Select database (default = postgresql)
+
+```bash
+setup.rb APP_NAME --database=sqlite
+```
+
 ## Using Addons
 
 You can include addons when creating a new application:

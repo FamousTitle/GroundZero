@@ -37,7 +37,23 @@ def create_app!(app_name)
   end
 
   puts "Creating new Rails application: #{app_name}"
-  system("rails new #{app_name} -d=postgresql --skip-docker -T --skip-system-test --javascript=esbuild")
+
+  database = "postgresql"
+  if ARGV.include?("-d=") || ARGV.include?("--database=")
+    ARGV.each do |arg|
+      if arg.start_with?("-d=") || arg.start_with?("--database=")
+        database = arg.split("=")[1]
+        break
+      end
+    end
+  end
+
+  if ARGV.include?("--api") || ARGV.include?("-api")
+    system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --api --javascript=esbuild")
+  else
+    system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --javascript=esbuild")
+  end
+
 end
 
 def copy_recursively(source_path, target_path, base_dir)
@@ -133,6 +149,30 @@ def install_addons!(app_dir, addons, script_dir)
   puts "All addons installed successfully!"
 end
 
+def remove_css_from_application_layout
+  # in the app_dir, locate app/views/layouts/application.html.erb and remove all the css classes in the main element
+  app_name = ARGV[0]
+  return unless app_name
+
+  app_dir = File.join(Dir.pwd, app_name)
+  layout_path = File.join(app_dir, 'app', 'views', 'layouts', 'application.html.erb')
+
+  unless File.exist?(layout_path)
+    puts "Warning: Layout file not found at #{layout_path}. Skipping final cleanup."
+    return
+  end
+
+  content = File.read(layout_path)
+  updated = content.sub(/<main[^>]*>/m, '<main>')
+
+  if updated == content
+    puts "Note: No changes made to <main> tag."
+  else
+    File.write(layout_path, updated)
+    puts "Simplified <main> tag in #{layout_path}."
+  end
+end
+
 def finalize_git!(app_dir)
   Dir.chdir(app_dir) do
     system("git add .")
@@ -161,6 +201,8 @@ def main
 
   addons = parse_addons(ARGV)
   install_addons!(app_dir, addons, script_dir)
+  
+  remove_css_from_application_layout
 
   finalize_git!(app_dir)
   puts "Setup complete!"
