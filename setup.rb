@@ -204,6 +204,10 @@ end
 
 def finalize_git!(app_dir)
   Dir.chdir(app_dir) do
+    # Run rubocop to auto-fix linting issues
+    puts "Running rubocop to fix linting issues..."
+    system("#{CMD_IN_CONTAINER} 'bin/rubocop -A'")
+    
     system("git add .")
     system("git commit -m 'Initial Commit'")
     system("git branch -M main")
