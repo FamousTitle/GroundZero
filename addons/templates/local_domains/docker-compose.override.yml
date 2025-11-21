@@ -26,7 +26,7 @@ services:
   web-rails:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`${APP_HOST:-localhost.dev}`)"
+      - "traefik.http.routers.app.rule=Host(`APP_NAME_PLACEHOLDER.dev`)"
       - "traefik.http.routers.app.entrypoints=websecure"
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.services.app.loadbalancer.server.port=3000"

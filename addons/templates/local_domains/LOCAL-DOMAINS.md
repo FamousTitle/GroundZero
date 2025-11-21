@@ -2,10 +2,8 @@
 
 This setup allows you to access your development environment using custom domains with HTTPS:
 
-- 🌐 **https://localhost.dev** - Main web application
+- 🌐 **https://APP_NAME_PLACEHOLDER.dev** - Main web application
 - 🔧 **http://localhost:4003** - Traefik dashboard
-
-By changing APP_HOST in .web-rails.local.env, you can set any domain
 
 ## Quick Setup
 
@@ -25,7 +23,7 @@ By changing APP_HOST in .web-rails.local.env, you can set any domain
 
 - Installs `mkcert` for local SSL certificate generation
 - Adds entries to `/etc/hosts` for local domain resolution
-- Generates trusted SSL certificates for your custom domain in `./services/traefik/certs/`
+- Generates trusted SSL certificates for `*.dev` in `./services/traefik/certs/`
 - Configures Traefik as a reverse proxy with automatic HTTPS
 
 ## File Structure
@@ -35,8 +33,8 @@ services/
 └── traefik/
     ├── tls.yml              # Traefik TLS configuration
     └── certs/
-        ├── <domain>.crt
-        └── <domain>.key
+        ├── dev.crt
+        └── dev.key
 ```
 
 ## Stopping the Environment

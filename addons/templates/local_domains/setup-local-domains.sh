@@ -2,13 +2,7 @@
 
 echo "🚀 Setting up local domain development with Traefik"
 
-# Load APP_HOST from .web-rails.local.env
-if [ -f .web-rails.local.env ]; then
-    export $(grep -v '^#' .web-rails.local.env | xargs)
-fi
-
-# Use APP_HOST from env file or default
-APP_HOST="${APP_HOST:-localhost.dev}"
+APP_HOST="APP_NAME_PLACEHOLDER.dev"
 echo "📍 Using domain: $APP_HOST"
 
 # Detect OS
@@ -77,20 +71,17 @@ setup_traefik() {
     # Create certs directory inside services/traefik folder
     mkdir -p ./services/traefik/certs
     
-    # Extract base domain for wildcard cert
-    BASE_DOMAIN=$(echo "$APP_HOST" | awk -F. '{print $(NF-1)"."$NF}')
-    
     # Generate certificates for local domains
-    echo "📜 Generating SSL certificates for *.$BASE_DOMAIN..."
-    mkcert -cert-file ./services/traefik/certs/${BASE_DOMAIN}.crt -key-file ./services/traefik/certs/${BASE_DOMAIN}.key "*.${BASE_DOMAIN}" "$APP_HOST" localhost
+    echo "📜 Generating SSL certificates for *.dev..."
+    mkcert -cert-file ./services/traefik/certs/dev.crt -key-file ./services/traefik/certs/dev.key "*.dev" "$APP_HOST" localhost
     
     # Create Traefik TLS configuration
     echo "📝 Creating Traefik TLS configuration..."
     cat > ./services/traefik/tls.yml <<EOF
 tls:
   certificates:
-    - certFile: /etc/ssl/certs/${BASE_DOMAIN}.crt
-      keyFile: /etc/ssl/certs/${BASE_DOMAIN}.key
+    - certFile: /etc/ssl/certs/dev.crt
+      keyFile: /etc/ssl/certs/dev.key
 EOF
     
     echo "✅ Traefik and SSL setup complete!"
