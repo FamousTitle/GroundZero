@@ -1,7 +1,7 @@
 class AuthenticateAddon < Base
 
   def self.install
-    run "rails generate authentication"
+    run "rails generate authentication --force"
     run "rails db:migrate"
 
     routes_path = "config/routes.rb"

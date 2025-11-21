@@ -3,7 +3,12 @@ class TailwindcssAddon < Base
   def self.install
     run "bundle add tailwindcss-ruby"
     run "bundle add tailwindcss-rails"
-    run "rails tailwindcss:install"
+    
+    # Create the tailwind directory and application.css file
+    FileUtils.mkdir_p('app/assets/tailwind')
+    File.write('app/assets/tailwind/application.css', '@import "tailwindcss";')
+    
+    run "rails tailwindcss:install --force"
 
     # Update docker-compose.yml to enable CSS service
     docker_compose_path = "docker-compose.yml"

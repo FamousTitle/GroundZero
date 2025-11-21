@@ -2,7 +2,7 @@ class RspecAddon < Base
   def self.install
     # rspec
     run "bundle add rspec-rails --group development,test"
-    run "rails generate rspec:install"
+    run "rails generate rspec:install --force"
 
     # factory bot
     run "bundle add factory_bot --group development,test"

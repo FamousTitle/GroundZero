@@ -1,31 +1,36 @@
-class Local_domainsAddon < BaseAddon
+class LocalDomainsAddon < Base
   def self.install
-    puts "Setting up local domain configuration..."
+    # This runs AFTER template files are copied by install_addons!
+    puts "Configuring local domain setup for #{File.basename(Dir.pwd)}.dev..."
     
     app_name = File.basename(Dir.pwd)
-    script_dir = File.expand_path('../../..', __dir__)
-    template_dir = File.join(script_dir, 'addons', 'templates', 'local_domains')
     
-    # Read and process docker-compose.override.yml
-    override_template = File.read(File.join(template_dir, 'docker-compose.override.yml'))
-    override_content = override_template.gsub('APP_NAME_PLACEHOLDER', app_name)
-    File.write('docker-compose.override.yml', override_content)
+    # Process the template files that were already copied
+    process_template_file('docker-compose.override.yml', app_name)
+    process_template_file('setup-local-domains.sh', app_name)
+    process_template_file('LOCAL-DOMAINS.md', app_name)
     
-    # Read and process setup-local-domains.sh
-    setup_template = File.read(File.join(template_dir, 'setup-local-domains.sh'))
-    setup_content = setup_template.gsub('APP_NAME_PLACEHOLDER', app_name)
-    File.write('setup-local-domains.sh', setup_content)
-    FileUtils.chmod(0755, 'setup-local-domains.sh')
-    
-    # Read and process LOCAL-DOMAINS.md
-    docs_template = File.read(File.join(template_dir, 'LOCAL-DOMAINS.md'))
-    docs_content = docs_template.gsub('APP_NAME_PLACEHOLDER', app_name)
-    File.write('LOCAL-DOMAINS.md', docs_content)
+    # Make setup script executable
+    FileUtils.chmod(0755, 'setup-local-domains.sh') if File.exist?('setup-local-domains.sh')
     
     # Patch development.rb
     patch_development_config(app_name)
     
-    puts "✅ Local domain files generated for #{app_name}.dev"
+    # Run the setup script to configure /etc/hosts and SSL certificates
+    puts "\n🔧 Running local domain setup script..."
+    system('./setup-local-domains.sh')
+    
+    puts "✅ Local domain files configured for #{app_name}.dev"
+  end
+  
+  private
+  
+  def self.process_template_file(filename, app_name)
+    return unless File.exist?(filename)
+    
+    content = File.read(filename)
+    updated_content = content.gsub('APP_NAME_PLACEHOLDER', app_name)
+    File.write(filename, updated_content)
   end
   
   private

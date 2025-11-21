@@ -2,6 +2,6 @@ class PhlexAddon < Base
 
   def self.install
     run "bundle add phlex-rails"
-    run "rails generate phlex:install"
+    run "rails generate phlex:install --force"
   end
 end

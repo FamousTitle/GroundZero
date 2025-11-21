@@ -86,13 +86,19 @@ end
 def prepare_environment!(app_dir, app_name)
   puts "Changing to application directory: #{app_dir}"
   Dir.chdir(app_dir) do
+    # Create .web-rails.local.env file if it doesn't exist
+    unless File.exist?('.web-rails.local.env')
+      FileUtils.touch('.web-rails.local.env')
+      puts "Created .web-rails.local.env file"
+    end
+    
     # remove any existing containers
     puts "Deleting existing containers: #{app_name}"
-    system("docker container ls | grep #{app_name} | awk '{print $1}' | xargs docker container rm -f")
+    system("docker container ls | grep #{app_name} | awk '{print $1}' | xargs docker container rm -f 2>/dev/null")
 
     # remove any existing volumes
     puts "Deleting existing volumes: #{app_name}"
-    system("docker volume ls | grep #{app_name} | awk '{print $2}' | xargs docker volume rm -f")
+    system("docker volume ls | grep #{app_name} | awk '{print $2}' | xargs docker volume rm -f 2>/dev/null")
 
     system("#{CMD_IN_CONTAINER} 'sudo chown -R rails:1000 /app/vendor/gems'")
     system("#{CMD_IN_CONTAINER} 'bundle add dotenv --group=development'")
@@ -126,19 +132,22 @@ def install_addons!(app_dir, addons, script_dir)
   Dir.chdir(app_dir) do
     addons.each do |addon|
       addon_name = addon.downcase
-      class_name = "#{addon.capitalize}Addon"
+      # Convert addon name to proper class name (e.g., local_domains -> LocalDomains)
+      class_name = "#{addon_name.split('_').map(&:capitalize).join}Addon"
 
       if Object.const_defined?(class_name)
         puts "Installing #{addon}..."
-        klass = Object.const_get(class_name)
-        klass.install
-
-        # copy addons/<addon>/templates/* to app_dir recursively
+        
+        # Copy addon templates FIRST (before running install)
         addon_template_dir = File.join(script_dir, 'addons', 'templates', addon_name)
         if Dir.exist?(addon_template_dir)
           puts "Copying addon templates from addons/templates/#{addon_name} to #{app_dir}..."
           copy_recursively(addon_template_dir, app_dir, addon_template_dir)
         end
+        
+        # Then run the addon's install method
+        klass = Object.const_get(class_name)
+        klass.install
 
         puts "#{addon} installed successfully!"
       else
@@ -184,10 +193,28 @@ end
 def main
   ensure_tools!
 
-  if ARGV.empty?
-    puts "Error: Please provide an application name as an argument"
-    puts "Usage: #{$PROGRAM_NAME} APP_NAME"
-    exit 1
+  if ARGV.empty? || ARGV[0] == "--help" || ARGV[0] == "-h" || ARGV[0] == "help"
+    puts "Usage: #{$PROGRAM_NAME} APP_NAME [OPTIONS]"
+    puts ""
+    puts "Options:"
+    puts "  -d=DATABASE, --database=DATABASE    Database to use (default: postgresql)"
+    puts "  --api, -api                         Create API-only application"
+    puts "  addons=ADDON1,ADDON2                Install specific addons"
+    puts "  -a=ADDON1,ADDON2                    Shorthand for addons="
+    puts "  --all, -all                         Install all available addons"
+    puts "  --help, -h, help                    Show this help message"
+    puts ""
+    puts "Available addons:"
+    addon_files = Dir.glob(File.join(File.dirname(__FILE__), 'addons/types/*.rb'))
+    addon_names = addon_files.map { |file| "  - #{File.basename(file, '.rb')}" }
+    puts addon_names.sort.join("\n")
+    puts ""
+    puts "Examples:"
+    puts "  #{$PROGRAM_NAME} myapp"
+    puts "  #{$PROGRAM_NAME} myapp --api"
+    puts "  #{$PROGRAM_NAME} myapp addons=phlex,authenticate"
+    puts "  #{$PROGRAM_NAME} myapp --all"
+    exit 0
   end
 
   app_name = ARGV[0]
