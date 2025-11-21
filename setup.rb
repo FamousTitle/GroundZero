@@ -49,11 +49,15 @@ def create_app!(app_name)
   end
 
   if ARGV.include?("--api") || ARGV.include?("-api")
-    system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --api --javascript=esbuild")
+    success = system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --api --javascript=esbuild")
   else
-    system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --javascript=esbuild")
+    success = system("rails new #{app_name} -d=#{database} --skip-docker -T --skip-system-test --javascript=esbuild")
   end
 
+  unless success
+    puts "\n❌ Error: Failed to create Rails application"
+    exit 1
+  end
 end
 
 def copy_recursively(source_path, target_path, base_dir)
@@ -100,12 +104,21 @@ def prepare_environment!(app_dir, app_name)
     puts "Deleting existing volumes: #{app_name}"
     system("docker volume ls | grep #{app_name} | awk '{print $2}' | xargs docker volume rm -f 2>/dev/null")
 
-    system("#{CMD_IN_CONTAINER} 'sudo chown -R rails:1000 /app/vendor/gems'")
-    system("#{CMD_IN_CONTAINER} 'bundle add dotenv --group=development'")
-    system("#{CMD_IN_CONTAINER} 'yarn install'")
-    system("bin/container db_clean")
+    run_or_exit("#{CMD_IN_CONTAINER} 'sudo chown -R rails:1000 /app/vendor/gems'", "Failed to fix gem permissions")
+    run_or_exit("#{CMD_IN_CONTAINER} 'bundle add dotenv --group=development'", "Failed to add dotenv gem")
+    run_or_exit("#{CMD_IN_CONTAINER} 'yarn install'", "Failed to install yarn packages")
+    run_or_exit("bin/container db_clean", "Failed to setup database")
   end
   puts "Fixed permissions!"
+end
+
+def run_or_exit(cmd, error_msg)
+  unless system(cmd)
+    puts "\n❌ Error: #{error_msg}"
+    puts "   Command: #{cmd}"
+    puts "   Exit code: #{$?.exitstatus}"
+    exit 1
+  end
 end
 
 def parse_addons(args)
@@ -146,8 +159,15 @@ def install_addons!(app_dir, addons, script_dir)
         end
         
         # Then run the addon's install method
-        klass = Object.const_get(class_name)
-        klass.install
+        begin
+          klass = Object.const_get(class_name)
+          klass.install
+        rescue => e
+          puts "\n❌ Error: Failed to install addon '#{addon}'"
+          puts "   #{e.class}: #{e.message}"
+          puts "   #{e.backtrace.first(5).join("\n   ")}"
+          exit 1
+        end
 
         puts "#{addon} installed successfully!"
       else
