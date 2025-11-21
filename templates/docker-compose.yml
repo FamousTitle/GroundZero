@@ -33,11 +33,11 @@ services:
   js:
     <<: *default
     command: "yarn build --watch"
-  sidekiq:
-    <<: *default
-    command: "bundle exec sidekiq -q low -q default -c 25"
-  redis:
-    image: redis:8.4.0
+  # sidekiq:
+  #   <<: *default
+  #   command: "bundle exec sidekiq -q low -q default -c 25" # comment out unless install sidekiq
+  # redis:
+  #   image: redis:8.4.0 # comment out unless install sidekiq
   db:
     image: postgres:18.1
     restart: always
