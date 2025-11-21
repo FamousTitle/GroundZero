@@ -9,7 +9,38 @@ ARG YARN_VERSION=1.22.22
 ARG UID=1000
 ARG GID=1000
 
-RUN apt-get update -qq && apt-get install -y build-essential sudo vim libvips-dev watchman
+RUN apt-get update -qq && \
+    apt-get install -y \
+    build-essential \
+    sudo \
+    vim \
+    libvips-dev \
+    watchman \
+    wget \
+    gnupg2 \
+    ca-certificates && \
+    if [ "$(dpkg --print-architecture)" = "amd64" ]; then \
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg && \
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+        apt-get update -qq && \
+        apt-get install -y google-chrome-stable; \
+    else \
+        apt-get install -y chromium chromium-driver; \
+    fi && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set Chrome paths based on architecture
+RUN if [ "$(dpkg --print-architecture)" = "amd64" ]; then \
+        echo 'export CHROME_BIN=/usr/bin/google-chrome-stable' >> /etc/environment && \
+        echo 'export CHROME_PATH=/usr/bin/google-chrome-stable' >> /etc/environment; \
+    else \
+        echo 'export CHROME_BIN=/usr/bin/chromium' >> /etc/environment && \
+        echo 'export CHROME_PATH=/usr/bin/chromium' >> /etc/environment && \
+        echo 'export CHROMEDRIVER_PATH=/usr/bin/chromedriver' >> /etc/environment; \
+    fi
+
+ENV CHROME_BIN=${CHROME_BIN}
+ENV CHROME_PATH=${CHROME_PATH}
 
 # acknowledge sudo warning
 RUN touch /var/lib/sudo/lectured/${LOCAL_USER}
@@ -37,6 +68,7 @@ RUN sudo npm install --force -g npm@${NPM_VERSION} yarn@$YARN_VERSION
 RUN echo "alias rails='bundle exec rails'" >> ~/.bashrc
 RUN echo "alias rspec='bundle exec rspec'" >> ~/.bashrc
 RUN echo "alias rake='bundle exec rake'" >> ~/.bashrc
+RUN echo "alias rubocop='bin/rubocop --cache true --autocorrect-all'" >> ~/.bashrc
 
 WORKDIR /app
 

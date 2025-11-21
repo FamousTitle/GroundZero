@@ -1,30 +1,60 @@
 #!/usr/bin/env ruby
+require 'date'
+
+def usage
+  puts "Usage: bin/container COMMAND"
+  puts "Commands:"
+  puts "          setup"
+  puts "          bash"
+  puts "          debugger"
+  puts "          up"
+  puts "          down"
+  puts "          logs"
+  puts "          db_clean"
+  puts
+  puts "Docker cleanup commands:"
+  puts "          docker_clean_containers \t(delete ALL containers)"
+  puts "          docker_clean_images \t\t(delete ALL images)"
+  puts "          docker_clean_volumes \t\t(delete ALL volumes)"
+  puts "          docker_clean_networks \t(delete ALL custom networks)"
+  puts "          docker_nuke \t\t\t(WARNING: deletes ALL docker data - containers, images, volumes, networks)"
+end
 
 # Check if app name argument is provided
 if ARGV.empty?
-  puts "Error: Missing arguments"
-  puts "Usage: ./run.rb COMMAND"
-  puts "Commands: sh, debugger, up, down, logs, db_clean"
+  usage
   exit 1
+end
+
+# Check if first argument is --service to set service_name
+service_name = "web-rails" # default
+if ARGV[0] == "--service" && ARGV[1]
+  service_name = ARGV[1]
+  ARGV.shift(2) # Remove --service and service_name from ARGV
 end
 
 command = ARGV.join(' ')
 
 app_name = File.basename(File.expand_path('..', __dir__))
-service_name = "web-rails"
 
-command_sh = "docker compose run --rm #{service_name} bash"
-command_debugger = "docker compose up -d && docker attach #{app_name}-#{service_name}-1"
-command_up = "docker compose up"
+command_debugger = "docker compose down && docker compose up -d && docker attach #{app_name}-#{service_name}-1"
+command_up = "docker compose down && docker compose up"
 command_down = "docker compose down"
 command_logs = "docker compose logs -f"
 command_db_clean = "docker compose run --rm #{service_name} bash -c 'rm -f db/schema.rb && bin/rails db:drop db:create db:migrate db:seed'"
-command_fresh_app = "docker compose run --rm #{service_name} bash -c 'touch .local.env && sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'"
-command_run = "docker compose run --rm #{service_name} bash -c 'bundle exec #{command}'"
+command_run = "docker compose run --rm #{service_name} bash -c '#{command}'"
+command_fresh_app = "docker compose run --rm #{service_name} bash -c 'touch .web-rails.local.env && sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'"
+
+# Docker cleanup tasks
+command_docker_clean_containers = 'docker ps -aq | xargs -r docker rm -f'
+command_docker_clean_images = 'docker images -q | xargs -r docker rmi -f'
+command_docker_clean_volumes = 'docker volume ls -q | xargs -r docker volume rm -f'
+command_docker_clean_networks = 'docker network ls -q | grep -v bridge | grep -v host | grep -v none | xargs -r docker network rm'
+command_docker_nuke = "#{command_docker_clean_containers}; #{command_docker_clean_images}; #{command_docker_clean_volumes}; #{command_docker_clean_networks}"
 
 case command
-when "sh"
-  system(command_sh)
+when "setup"
+  system("./setup.rb")
 when "debugger"
   system(command_debugger)
 when "up"
@@ -36,11 +66,32 @@ when "logs"
 when "db_clean"
   system(command_db_clean)
 when "fresh_app"
-  puts "add .local.env and fix permissions for install gems"
   system(command_fresh_app)
-
-  puts "setup db"
-  system(command_db_clean)
+when "docker_clean_containers"
+  puts "Deleting all containers..."
+  system(command_docker_clean_containers)
+when "docker_clean_images"
+  puts "Deleting all images..."
+  system(command_docker_clean_images)
+when "docker_clean_volumes"
+  puts "Deleting all volumes..."
+  system(command_docker_clean_volumes)
+when "docker_clean_networks"
+  puts "Deleting all custom networks..."
+  system(command_docker_clean_networks)
+when "docker_nuke"
+  puts "WARNING: This will delete ALL Docker data (containers, images, volumes, networks)!"
+  print "Are you sure? Type 'yes' to continue: "
+  confirmation = $stdin.gets.chomp
+  if confirmation.downcase == 'yes'
+    puts "Nuking all Docker data..."
+    system(command_docker_nuke)
+    puts "Done! All Docker data has been removed."
+  else
+    puts "Cancelled."
+  end
+when "help", "--help", "-h"
+  usage
 else
   system(command_run)
 end

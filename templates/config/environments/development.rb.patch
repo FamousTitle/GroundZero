@@ -1,0 +1,6 @@
+# This file is meant to be merged/inserted into config/environments/development.rb
+# after Rails app generation. The setup.rb script should handle this.
+
+# Allow requests from custom domain
+config.hosts << ENV.fetch("APP_HOST", "localhost")
+config.hosts << ".#{ENV.fetch("APP_HOST", "localhost")}" # Allow subdomains

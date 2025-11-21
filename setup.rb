@@ -173,6 +173,37 @@ def remove_css_from_application_layout
   end
 end
 
+def patch_development_config!(app_dir)
+  puts "Patching config/environments/development.rb for custom domain support..."
+  dev_config_path = File.join(app_dir, 'config', 'environments', 'development.rb')
+  
+  unless File.exist?(dev_config_path)
+    puts "Warning: development.rb not found. Skipping APP_HOST configuration."
+    return
+  end
+  
+  content = File.read(dev_config_path)
+  
+  # Check if already patched
+  if content.include?('APP_HOST')
+    puts "development.rb already configured for APP_HOST"
+    return
+  end
+  
+  # Find the line "Rails.application.configure do" and insert after it
+  patch = <<~RUBY
+  
+    # Allow requests from custom domain
+    config.hosts << ENV.fetch("APP_HOST", "localhost")
+    config.hosts << ".#{ENV.fetch("APP_HOST", "localhost")}" # Allow subdomains
+  RUBY
+  
+  updated = content.sub(/Rails\.application\.configure do\n/, "Rails.application.configure do#{patch}\n")
+  
+  File.write(dev_config_path, updated)
+  puts "Successfully patched development.rb with APP_HOST configuration"
+end
+
 def finalize_git!(app_dir)
   Dir.chdir(app_dir) do
     system("git add .")
@@ -203,6 +234,7 @@ def main
   install_addons!(app_dir, addons, script_dir)
   
   remove_css_from_application_layout
+  patch_development_config!(app_dir)
 
   finalize_git!(app_dir)
   puts "Setup complete!"

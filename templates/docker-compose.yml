@@ -4,8 +4,8 @@ x-app: &default
     dockerfile: Dockerfile.dev
   env_file:
     - .env
-    - .local.env
     - .db.env
+    - .web-rails.local.env
   logging:
     driver: "json-file"
   volumes:
@@ -23,6 +23,7 @@ services:
     ports:
       - "4000:3000"
     depends_on:
+      - db
       # - css # comment out unless install tailwindcss
       - js
     command: "bash -c 'rm -f /app/tmp/pids/server.pid && bin/rails server -p 3000 -b 0.0.0.0'"
@@ -32,13 +33,18 @@ services:
   js:
     <<: *default
     command: "yarn build --watch"
+  sidekiq:
+    <<: *default
+    command: "bundle exec sidekiq -q low -q default -c 25"
+  redis:
+    image: redis:8.4.0
   db:
-    image: postgres:14.5
+    image: postgres:18.1
     restart: always
-    logging:
-      driver: "none"
+    # logging:
+    #   driver: "none"
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql
     env_file:
       - .db.env
   db-admin:
