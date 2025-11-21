@@ -49,7 +49,7 @@ command_fresh_app = "docker compose run --rm #{service_name} bash -c 'touch .web
 command_docker_clean_containers = 'docker ps -aq | xargs -r docker rm -f'
 command_docker_clean_images = 'docker images -q | xargs -r docker rmi -f'
 command_docker_clean_volumes = 'docker volume ls -q | xargs -r docker volume rm -f'
-command_docker_clean_networks = 'docker network ls -q | grep -v bridge | grep -v host | grep -v none | xargs -r docker network rm'
+command_docker_clean_networks = 'docker ps -aq | xargs -r docker stop; docker ps -aq | xargs -r docker rm -f; docker network ls -q | grep -v bridge | grep -v host | grep -v none | xargs -r docker network rm'
 command_docker_nuke = "#{command_docker_clean_containers}; #{command_docker_clean_images}; #{command_docker_clean_volumes}; #{command_docker_clean_networks}"
 
 case command
@@ -77,6 +77,8 @@ when "docker_clean_volumes"
   puts "Deleting all volumes..."
   system(command_docker_clean_volumes)
 when "docker_clean_networks"
+  puts "Stopping all containers..."
+  puts "Removing all containers..."
   puts "Deleting all custom networks..."
   system(command_docker_clean_networks)
 when "docker_nuke"
