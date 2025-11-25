@@ -4,13 +4,13 @@ require 'date'
 def usage
   puts "Usage: bin/container COMMAND"
   puts "Commands:"
-  puts "          setup"
-  puts "          bash"
-  puts "          debugger"
-  puts "          up"
-  puts "          down"
-  puts "          logs"
-  puts "          db_clean"
+  puts "          setup       (setup new app)"
+  puts "          fresh_app   (setup local env and install dependencies)"
+  puts "          bash        (open a bash shell in the container)"
+  puts "          debugger    (open a bash shell with debugger tools)"
+  puts "          up          (start the container)"
+  puts "          down        (stop the container)"
+  puts "          logs        (view container logs)"
   puts
   puts "Docker cleanup commands:"
   puts "          docker_clean_containers \t(delete ALL containers)"
@@ -41,8 +41,7 @@ command_debugger = "docker compose down && docker compose up -d && docker attach
 command_up = "docker compose down && docker compose up"
 command_down = "docker compose down"
 command_logs = "docker compose logs -f"
-command_db_clean = "docker compose run --rm #{service_name} bash -c 'rm -f db/schema.rb && bin/rails db:drop db:create db:migrate db:seed'"
-command_run = "docker compose run --rm #{service_name} bash -c '#{command}'"
+command_bash = "docker compose run --rm #{service_name} bash"
 command_fresh_app = "docker compose run --rm #{service_name} bash -c 'touch .web-rails.local.env && sudo chown -R rails:1000 /app/vendor/gems && bundle install && yarn install'"
 
 # Docker cleanup tasks
@@ -55,6 +54,8 @@ command_docker_nuke = "#{command_docker_clean_containers}; #{command_docker_clea
 case command
 when "setup"
   system("./setup.rb")
+when "bash"
+  system(command_bash)
 when "debugger"
   system(command_debugger)
 when "up"
@@ -63,8 +64,6 @@ when "down"
   system(command_down)
 when "logs"
   system(command_logs)
-when "db_clean"
-  system(command_db_clean)
 when "fresh_app"
   system(command_fresh_app)
 when "docker_clean_containers"
@@ -95,5 +94,8 @@ when "docker_nuke"
 when "help", "--help", "-h"
   usage
 else
-  system(command_run)
+  puts "Unknown command: #{command}"
+  puts "Use 'bin/container help' to see available commands."
+  puts "Running bash shell by default..."
+  system(command_bash)
 end
