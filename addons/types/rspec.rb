@@ -15,12 +15,16 @@ class RspecAddon < Base
     if File.exist?(rails_helper_path)
       content = File.read(rails_helper_path)
       
+      # Replace ENV['RAILS_ENV'] ||= 'test' with ENV['RAILS_ENV'] = 'test'
+      content.gsub!(/ENV\['RAILS_ENV'\] \|\|= 'test'/, "ENV['RAILS_ENV'] = 'test'")
+      
       # Insert capybara/rails after rspec/rails
       unless content.include?("require 'capybara/rails'")
         content.gsub!(/require 'rspec\/rails'/, "require 'rspec/rails'\nrequire 'capybara/rails'")
-        File.write(rails_helper_path, content)
-        puts "✅ Added Capybara to rails_helper.rb"
       end
+      
+      File.write(rails_helper_path, content)
+      puts "✅ Added Capybara to rails_helper.rb and set RAILS_ENV"
     end
     
     # Add capybara/rspec to spec_helper.rb at the top
