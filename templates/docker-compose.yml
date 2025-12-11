@@ -41,8 +41,8 @@ services:
   db:
     image: postgres:18.1
     restart: always
-    # logging:
-    #   driver: "none"
+    logging:
+      driver: "json-file"
     volumes:
       - db:/var/lib/postgresql
     env_file:
@@ -53,7 +53,7 @@ services:
     ports:
       - "4001:8080"
     logging:
-      driver: "none"
+      driver: "json-file"
     environment:
       ADMINER_DESIGN: pepa-linha
     depends_on:
